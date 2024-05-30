@@ -1,7 +1,11 @@
-import React from "react";
+import Navbar from "./Navbar";
 
 function Header() {
-  return <div></div>;
+  return (
+    <div>
+      <Navbar />
+    </div>
+  );
 }
 
 export default Header;
