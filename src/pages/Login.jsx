@@ -3,6 +3,14 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import React from "react";
+import {
+  Flex,
+  Button,
+  Heading,
+  Input,
+  FormControl,
+  FormErrorMessage,
+} from "@chakra-ui/react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -38,29 +46,67 @@ function Login() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleLoginSubmit}>
-        <h2>Log In</h2>
-        {error && <div>{error}</div>}
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input type="email" id="email" value={email} onChange={handleEmail} />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
+    <Flex height="100vh" alignItems="center" justifyContent="center">
+      <Flex
+        as="form"
+        direction="column"
+        background="gray.300"
+        p={12}
+        rounded={6}
+        onSubmit={handleLoginSubmit}
+      >
+        <Heading mb={6}>Log in</Heading>
+        <FormControl isInvalid={error}>
+          <Input
+            placeholder="test@test.com"
+            variant="filled"
+            mb={3}
+            type="email"
+            value={email}
+            onChange={handleEmail}
+          />
+          <Input
+            placeholder="Test123"
+            variant="filled"
+            mb={6}
             type="password"
-            id="password"
             value={password}
             onChange={handlePassword}
           />
-        </div>
-        <button type="submit">Log In</button>
+          {error && <FormErrorMessage>{error}</FormErrorMessage>}
+        </FormControl>
+        <Button mb={6} colorScheme="teal" type="submit">
+          Log in
+        </Button>
         <p>
           Don't have an account? <Link to="/signup">Sign up</Link>
         </p>
-      </form>
-    </div>
+      </Flex>
+    </Flex>
+    //   <div>
+    //     <form onSubmit={handleLoginSubmit}>
+    //       <h2>Log In</h2>
+    //       {error && <div>{error}</div>}
+    //       <div>
+    //         <label htmlFor="email">Email:</label>
+    //         <input type="email" id="email" value={email} onChange={handleEmail} />
+    //       </div>
+    //       <div>
+    //         <label htmlFor="password">Password:</label>
+    //         <input
+    //           type="password"
+    //           id="password"
+    //           value={password}
+    //           onChange={handlePassword}
+    //         />
+    //       </div>
+    //       <button type="submit">Log In</button>
+    //       <p>
+    //         Don't have an account? <Link to="/signup">Sign up</Link>
+    //       </p>
+    //     </form>
+    //   </div>
+    // );
   );
 }
 

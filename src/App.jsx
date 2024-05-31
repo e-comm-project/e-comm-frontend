@@ -11,28 +11,36 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import ContactUs from "./pages/ContactUs";
-import Cart from "./pages/Cart";
 import AdminDashboard from "./pages/AdminDashboard";
+import { CartProvider } from "./context/cart.context";
+import Cart from "./components/cart";
+import Orders from "./pages/Orders";
+import { OrdersProvider } from "./context/order.context";
 
 function App() {
   return (
-    <div>
-      <Header />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/products" element={<ProductList />} />
-        <Route path="/products/:productId" element={<ProductDetails />} />
-        <Route path="/orders" element={<Cart />} />
-        <Route path="/about" element={<AboutUs />} />
-        <Route path="/contact" element={<ContactUs />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Footer />
-    </div>
+    <OrdersProvider>
+      <CartProvider>
+        <div className="app">
+          <Header />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/products" element={<ProductList />} />
+            <Route path="/products/:productId" element={<ProductDetails />} />
+            <Route exact path="/" component={Cart} />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/contact" element={<ContactUs />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Footer />
+        </div>
+      </CartProvider>
+    </OrdersProvider>
   );
 }
 
