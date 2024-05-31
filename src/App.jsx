@@ -14,30 +14,27 @@ import ContactUs from "./pages/ContactUs";
 import AdminDashboard from "./pages/AdminDashboard";
 import { CartProvider } from "./context/cart.context";
 import Orders from "./pages/Orders";
-import { OrdersProvider } from "./context/order.context";
 
 function App() {
   return (
     <CartProvider>
-      <OrdersProvider>
-        <div className="app">
-          <Header />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/products" element={<ProductList />} />
-            <Route path="/products/:productId" element={<ProductDetails />} />
-            <Route path="/orders" element={<Orders />} />
-            <Route path="/about" element={<AboutUs />} />
-            <Route path="/contact" element={<ContactUs />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <Footer />
-        </div>
-      </OrdersProvider>
+      <div className="app">
+        <Header />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/products" element={<ProductList />} />
+          <Route path="/products/:productId" element={<ProductDetails />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/contact" element={<ContactUs />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <Footer />
+      </div>
     </CartProvider>
   );
 }

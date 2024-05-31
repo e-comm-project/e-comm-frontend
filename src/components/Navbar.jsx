@@ -41,15 +41,15 @@ function Navbar() {
       {/* Left side */}
       <Flex align="center" mr={5}>
         {/* Home Link */}
-        <Box as={RouterLink} to="/" mr={4}>
+        <Box as={RouterLink} to="/" mr={4} bg="black">
           <Icon as={FiHome} />
         </Box>
         {/* Contact Link */}
-        <Box as={RouterLink} to="/contact" mr={4}>
+        <Box as={RouterLink} to="/contact" mr={4} bg="black">
           <Icon as={FiUser} />
         </Box>
         {/* About Link */}
-        <Box as={RouterLink} to="/about" mr={4}>
+        <Box as={RouterLink} to="/about" mr={4} bg="black">
           <Icon as={FiUser} />
         </Box>
       </Flex>
