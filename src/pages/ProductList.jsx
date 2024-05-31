@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { CartContext } from "../context/cart.context.jsx";
+
 import {
   Box,
   Grid,
-  GridItem,
   Heading,
   Text,
   Image,
   Spinner,
   Alert,
   AlertIcon,
+  Button,
+  GridItem,
+  useConst,
 } from "@chakra-ui/react";
-import Product from "../components/product";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -19,6 +22,7 @@ const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const cartcont = useContext(CartContext);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -34,6 +38,11 @@ const ProductList = () => {
 
     fetchProducts();
   }, []);
+
+  const handleAddToOrder = (product) => {
+    cartcont.addItem(product);
+    console.log("product", product);
+  };
 
   if (loading) {
     return (
@@ -67,39 +76,41 @@ const ProductList = () => {
         gap="6"
       >
         {products.map((product) => (
-          <Product key={product.id} product={product} />
-          // <GridItem
-          //   key={product._id}
-          //   borderWidth="1px"
-          //   borderRadius="md"
-          //   overflow="hidden"
-          //   boxShadow="md"
-          //   position="relative"
-          // >
-          //   <Image
-          //     src={product.image}
-          //     alt={product.name}
-          //     objectFit="cover"
-          //     width="100%"
-          //     height="100%"
-          //   />
-          //   <Box
-          //     position="absolute"
-          //     bottom="0"
-          //     left="0"
-          //     width="100%"
-          //     bg="rgba(0, 0, 0, 0.6)"
-          //     color="white"
-          //     p="3"
-          //     textAlign="center"
-          //   >
-          //     <Heading as="h2" size="md" mb="2">
-          //       {product.name}
-          //     </Heading>
-          //     <Text mb="2">{product.description}</Text>
-          //     <Text fontWeight="bold">Price: ${product.price}</Text>
-          //   </Box>
-          // </GridItem>
+          <GridItem
+            key={product.id}
+            borderWidth="1px"
+            borderRadius="md"
+            overflow="hidden"
+            boxShadow="md"
+            position="relative"
+          >
+            <Image
+              src={product.image}
+              alt={product.name}
+              objectFit="cover"
+              width="100%"
+              height="100%"
+            />
+            <Box
+              position="absolute"
+              bottom="0"
+              left="0"
+              width="100%"
+              bg="rgba(0, 0, 0, 0.6)"
+              color="white"
+              p="3"
+              textAlign="center"
+            >
+              <Heading as="h2" size="md" mb="2">
+                {product.name}
+              </Heading>
+              <Text mb="2">{product.description}</Text>
+              <Text fontWeight="bold">Price: ${product.price}</Text>
+              <Button onClick={() => handleAddToOrder(product)}>
+                Add to Order
+              </Button>
+            </Box>
+          </GridItem>
         ))}
       </Grid>
     </Box>

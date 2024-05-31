@@ -13,14 +13,13 @@ import Profile from "./pages/Profile";
 import ContactUs from "./pages/ContactUs";
 import AdminDashboard from "./pages/AdminDashboard";
 import { CartProvider } from "./context/cart.context";
-import Cart from "./components/cart";
 import Orders from "./pages/Orders";
 import { OrdersProvider } from "./context/order.context";
 
 function App() {
   return (
-    <OrdersProvider>
-      <CartProvider>
+    <CartProvider>
+      <OrdersProvider>
         <div className="app">
           <Header />
           <Routes>
@@ -31,7 +30,6 @@ function App() {
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/products" element={<ProductList />} />
             <Route path="/products/:productId" element={<ProductDetails />} />
-            <Route exact path="/" component={Cart} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/about" element={<AboutUs />} />
             <Route path="/contact" element={<ContactUs />} />
@@ -39,8 +37,8 @@ function App() {
           </Routes>
           <Footer />
         </div>
-      </CartProvider>
-    </OrdersProvider>
+      </OrdersProvider>
+    </CartProvider>
   );
 }
 

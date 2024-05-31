@@ -1,11 +1,12 @@
-import React from "react";
-import { useCart } from "../context/cart.context";
+/*import { useCart } from "../context/cart.context";
 
 const Product = ({ product }) => {
   const { addItem } = useCart();
+  console.log("ADD");
 
   const handleAddToCart = () => {
     addItem(product);
+    console.log("ADD2");
   };
 
   return (
@@ -18,3 +19,4 @@ const Product = ({ product }) => {
 };
 
 export default Product;
+*/
