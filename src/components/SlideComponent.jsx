@@ -43,15 +43,19 @@ const SlideComponent = () => {
   return (
     <Box
       position="relative"
-      minWidth="1019px"
-      minHeight="560px"
+      minWidth={{ base: "100%", md: "720px", lg: "1019px" }}
+      minHeight={{ base: "300px", md: "400px", lg: "560px" }}
       overflow="hidden"
       width="100%"
       height="100%"
     >
       <Slider {...settings}>
         {slides.map((slide, index) => (
-          <Box key={index} position="relative" minHeight="560px">
+          <Box
+            key={index}
+            position="relative"
+            minHeight={{ base: "300px", md: "400px", lg: "560px" }}
+          >
             <Image
               src={slide.src}
               alt={slide.title}
@@ -69,7 +73,7 @@ const SlideComponent = () => {
               p="3"
               textAlign="center"
             >
-              <Heading as="h2" size="lg" mb="2">
+              <Heading as="h2" size={{ base: "md", md: "lg" }} mb="2">
                 {slide.title}
               </Heading>
               <Text>{slide.description}</Text>
