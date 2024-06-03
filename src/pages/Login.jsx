@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
+
 import React from "react";
 import {
   Flex,
@@ -18,10 +19,11 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(undefined);
+  const [role, setRole] = useState([]);
 
   const navigate = useNavigate();
 
-  const { storeToken, authenticateUser } = useContext(AuthContext);
+  const { storeToken, authenticateUser, user } = useContext(AuthContext);
 
   const handleEmail = (e) => setEmail(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
@@ -29,15 +31,19 @@ function Login() {
   const handleLoginSubmit = (e) => {
     e.preventDefault();
 
-    const requestBody = { email, password };
+    const requestBody = { email, password, role };
+    const userRole = user.role;
 
     axios
       .post(`${API_URL}/auth/login`, requestBody)
       .then((response) => {
-        console.log("JWT token", response.data.authToken);
         storeToken(response.data.authToken);
         authenticateUser();
-        navigate("/");
+        if (userRole === "admin") {
+          navigate("/admin");
+        } else if (userRole === "user") {
+          navigate("/profile");
+        }
       })
       .catch((error) => {
         const errorMessage = error.response.data.message;
