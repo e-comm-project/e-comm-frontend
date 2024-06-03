@@ -32,18 +32,12 @@ function Login() {
     e.preventDefault();
 
     const requestBody = { email, password, role };
-    const userRole = user.role;
 
     axios
       .post(`${API_URL}/auth/login`, requestBody)
       .then((response) => {
         storeToken(response.data.authToken);
         authenticateUser();
-        if (userRole === "admin") {
-          navigate("/admin");
-        } else if (userRole === "user") {
-          navigate("/profile");
-        }
       })
       .catch((error) => {
         const errorMessage = error.response.data.message;

@@ -15,6 +15,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import { CartProvider } from "./context/cart.context";
 import Orders from "./pages/Orders";
 
+import IsAdmin from "./components/IsAdmin";
+
 function App() {
   return (
     <CartProvider>
@@ -25,7 +27,14 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/admin" element={<AdminDashboard />} />
+          <Route
+            path="/admin"
+            element={
+              <IsAdmin>
+                <AdminDashboard />
+              </IsAdmin>
+            }
+          />
           <Route path="/products" element={<ProductList />} />
           <Route path="/products/:productId" element={<ProductDetails />} />
           <Route path="/orders" element={<Orders />} />

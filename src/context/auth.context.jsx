@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -10,6 +11,7 @@ function AuthProviderWrapper(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [authError, setAuthError] = useState(null);
+  const navigate = useNavigate();
 
   const storeToken = (token) => {
     localStorage.setItem("authToken", token);
@@ -29,6 +31,12 @@ function AuthProviderWrapper(props) {
           setIsLoggenIn(true);
           setIsLoading(false);
           setUser(user);
+
+          if (user.role === "admin") {
+            navigate("/admin");
+          } else if (user.role === "user") {
+            navigate("/profile");
+          }
         })
         .catch((error) => {
           if (error) {
