@@ -11,9 +11,13 @@ export const CartProvider = ({ children }) => {
     setCart((prevCart) => [...prevCart, item]);
   };
 
-  const removeItem = (itemId) => {
+  const removeItem = (index) => {
     setPrevCart(cart);
-    setCart((prevCart) => prevCart.filter((item) => item.id !== itemId));
+    setCart((prevCart) => {
+      const newCart = [...prevCart];
+      newCart.splice(index, 1);
+      return newCart;
+    });
   };
 
   const updateQuantity = (itemId, newQuantity) => {

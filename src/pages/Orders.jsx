@@ -3,10 +3,10 @@ import { Box, Button, Image, Text, VStack } from "@chakra-ui/react";
 import { CartContext } from "../context/cart.context";
 
 const Orders = () => {
-  const { cart, deleteItem } = useContext(CartContext);
+  const { cart, removeItem } = useContext(CartContext);
 
   const handleDelete = (index) => {
-    deleteItem(index);
+    removeItem(index);
   };
 
   return (
