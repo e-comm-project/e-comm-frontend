@@ -12,7 +12,7 @@ const slides = [
     title: "Sunshine Bliss Floral Sundress Set",
     description:
       "Radiate summer vibes with the Sunshine Bliss Floral Sundress Set.",
-    src: "https://i.ibb.co/Y7rnHBt/1.png",
+    src: "https://i.ibb.co/4M4VLMW/image.png",
   },
   {
     title: "Tropical Breeze Summer Ensemble",

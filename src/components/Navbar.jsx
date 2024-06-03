@@ -10,8 +10,10 @@ import {
   MenuItem,
   Stack,
   Icon,
+  Image,
+  Spacer,
 } from "@chakra-ui/react";
-import { FiHome, FiUser, FiShoppingCart, FiHeart } from "react-icons/fi";
+import { FiUser, FiShoppingCart, FiHeart } from "react-icons/fi";
 
 function Navbar() {
   const [showAuthOptions, setShowAuthOptions] = useState(false);
@@ -36,70 +38,86 @@ function Navbar() {
       justify="space-between"
       wrap="wrap"
       padding={4}
+      bg="dark"
       color="white"
     >
       {/* Left side */}
       <Flex align="center" mr={5}>
         {/* Home Link */}
-        <Box as={RouterLink} to="/" mr={4} bg="black">
-          <Icon as={FiHome} />
+        <Box as={RouterLink} to="/" color="black" mr={4}>
+          Home
         </Box>
-        {/* Contact Link */}
-        <Box as={RouterLink} to="/contact" mr={4} bg="black">
-          <Icon as={FiUser} />
+        {/* Contact Us Link */}
+        <Box as={RouterLink} to="/contact" color="black" mr={4}>
+          Contact Us
         </Box>
-        {/* About Link */}
-        <Box as={RouterLink} to="/about" mr={4} bg="black">
-          <Icon as={FiUser} />
+        {/* About Us Link */}
+        <Box as={RouterLink} to="/about" color="black" mr={4}>
+          About Us
+        </Box>
+        {/* Women Link */}
+        <Box as={RouterLink} to="/products" color="black" mr={4}>
+          Women
         </Box>
       </Flex>
 
-      {/* Right side */}
+      <Spacer />
+
+      {/* Center Logo */}
       <Box>
-        <Stack direction="row" spacing={4}>
-          {/* Login Icon with Menu */}
-          <Menu onClose={handleMenuClose}>
-            <MenuButton
-              as={IconButton}
-              icon={<Icon as={FiUser} />}
-              aria-label="User"
-              onMouseEnter={handleAuthOptionsToggle}
-            />
-            <MenuList
-              display={showAuthOptions ? "block" : "none"}
-              onMouseEnter={handleMenuItemHover}
-              onMouseLeave={handleAuthOptionsToggle}
-              bg="white"
-            >
-              <MenuItem
-                as={RouterLink}
-                to="/login"
-                color="black"
-                _hover={{ bg: "black", color: "blue.500" }}
-              >
-                Login
-              </MenuItem>
-              <MenuItem
-                as={RouterLink}
-                to="/signup"
-                color="black"
-                _hover={{ bg: "black", color: "blue.500" }}
-              >
-                Sign Up
-              </MenuItem>
-            </MenuList>
-          </Menu>
-          {/* Favorite Icon */}
-          <IconButton icon={<Icon as={FiHeart} />} aria-label="Favorite" />
-          {/* Cart Icon */}
-          <IconButton
-            as={RouterLink}
-            to="/orders"
-            icon={<Icon as={FiShoppingCart} />}
-            aria-label="Cart"
-          />
-        </Stack>
+        <Image
+          src="https://i.ibb.co/6v77dhS/66.jpg"
+          alt="Logo"
+          boxSize="absolute"
+        />
       </Box>
+
+      <Spacer />
+
+      {/* Right side */}
+      <Stack direction="row" spacing={4} align="center">
+        {/* Login Icon with Menu */}
+        <Menu onClose={handleMenuClose}>
+          <MenuButton
+            as={IconButton}
+            icon={<Icon as={FiUser} />}
+            aria-label="User"
+            onMouseEnter={handleAuthOptionsToggle}
+          />
+          <MenuList
+            display={showAuthOptions ? "block" : "none"}
+            onMouseEnter={handleMenuItemHover}
+            onMouseLeave={handleAuthOptionsToggle}
+            bg="white"
+          >
+            <MenuItem
+              as={RouterLink}
+              to="/login"
+              color="black"
+              _hover={{ bg: "black", color: "blue.500" }}
+            >
+              Login
+            </MenuItem>
+            <MenuItem
+              as={RouterLink}
+              to="/signup"
+              color="black"
+              _hover={{ bg: "black", color: "blue.500" }}
+            >
+              Sign Up
+            </MenuItem>
+          </MenuList>
+        </Menu>
+        {/* Favorite Icon */}
+        <IconButton icon={<Icon as={FiHeart} />} aria-label="Favorite" />
+        {/* Cart Icon */}
+        <IconButton
+          as={RouterLink}
+          to="/orders"
+          icon={<Icon as={FiShoppingCart} />}
+          aria-label="Cart"
+        />
+      </Stack>
     </Flex>
   );
 }
