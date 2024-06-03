@@ -1,5 +1,16 @@
+// UsersTab.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import {
+  Box,
+  Button,
+  VStack,
+  Text,
+  Spinner,
+  Alert,
+  AlertIcon,
+} from "@chakra-ui/react";
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 const UsersTab = () => {
@@ -10,9 +21,9 @@ const UsersTab = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const token = localStorage.getItem("authToken"); // Retrieve the token from localStorage
+        const token = localStorage.getItem("authToken");
         const response = await axios.get(`${API_URL}/admin/users`, {
-          headers: { Authorization: `Bearer ${token}` }, // Include the token in the request headers
+          headers: { Authorization: `Bearer ${token}` },
         });
         setUsers(response.data);
         setLoading(false);
@@ -27,9 +38,9 @@ const UsersTab = () => {
 
   const handleDeleteUser = async (userId) => {
     try {
-      const token = localStorage.getItem("authToken"); // Retrieve the token from localStorage
+      const token = localStorage.getItem("authToken");
       await axios.delete(`${API_URL}/admin/users/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` }, // Include the token in the request headers
+        headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(users.filter((user) => user._id !== userId));
     } catch (error) {
@@ -38,25 +49,40 @@ const UsersTab = () => {
   };
 
   if (loading) {
-    return <p>Loading users...</p>;
+    return <Spinner />;
   }
 
   if (error) {
-    return <p>Error: {error}</p>;
+    return (
+      <Alert status="error">
+        <AlertIcon />
+        {error}
+      </Alert>
+    );
   }
 
   return (
-    <div>
-      <h2>Users</h2>
-      <ul>
-        {users.map((user) => (
-          <li key={user._id}>
+    <VStack spacing={4}>
+      {users.map((user) => (
+        <Box
+          key={user._id}
+          p={4}
+          borderWidth={1}
+          borderRadius="lg"
+          w="100%"
+          d="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Text>
             {user.username} - {user.email} - {user.role}
-            <button onClick={() => handleDeleteUser(user._id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+          </Text>
+          <Button colorScheme="red" onClick={() => handleDeleteUser(user._id)}>
+            Delete
+          </Button>
+        </Box>
+      ))}
+    </VStack>
   );
 };
 
