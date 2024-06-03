@@ -1,26 +1,88 @@
-import { useContext } from "react";
-import { Box, Button, Image, Text, VStack } from "@chakra-ui/react";
-import { CartContext } from "../context/cart.context";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Box, Text, VStack, Button, Spinner } from "@chakra-ui/react";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Orders = () => {
-  const { cart, removeItem } = useContext(CartContext);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const handleDelete = (index) => {
-    removeItem(index);
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+
+        if (!token) {
+          throw new Error("No authorization token was found");
+        }
+
+        const response = await axios.get(`${API_URL}/orders`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setOrders(response.data);
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  const handleDelete = async (orderId) => {
+    try {
+      const token = localStorage.getItem("authToken");
+
+      if (!token) {
+        throw new Error("No authorization token was found");
+      }
+
+      await axios.delete(`${API_URL}/orders/${orderId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setOrders(orders.filter((order) => order._id !== orderId));
+    } catch (error) {
+      console.error("Error deleting order:", error);
+    }
   };
+
+  if (loading) {
+    return (
+      <Box textAlign="center" mt="5">
+        <Spinner size="xl" />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box textAlign="center" mt="5">
+        <Text>Error: {error}</Text>
+      </Box>
+    );
+  }
 
   return (
     <Box p={4}>
       <Text as="h2" fontSize="2xl" mb={4}>
         Orders
       </Text>
-      {cart.length === 0 ? (
+      {orders.length === 0 ? (
         <Text>No orders placed yet</Text>
       ) : (
         <VStack spacing={4}>
-          {cart.map((order, index) => (
+          {orders.map((order) => (
             <Box
-              key={index}
+              key={order._id}
               borderWidth="1px"
               borderRadius="md"
               overflow="hidden"
@@ -28,18 +90,11 @@ const Orders = () => {
               width="100%"
               display="flex"
               alignItems="center"
+              justifyContent="space-between"
             >
-              <Image
-                src={order.image}
-                alt={order.name}
-                boxSize="100px"
-                mr={4}
-              />
-              <Box flex="1">
-                <Text>Name: {order.name}</Text>
-                <Text>Price: {order.price}</Text>
-              </Box>
-              <Button colorScheme="red" onClick={() => handleDelete(index)}>
+              <Text>Name: {order.products[0].product.name}</Text>
+              <Text>Price: ${order.total}</Text>
+              <Button colorScheme="red" onClick={() => handleDelete(order._id)}>
                 Delete
               </Button>
             </Box>
