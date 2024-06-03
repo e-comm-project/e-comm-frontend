@@ -64,7 +64,7 @@ function Login() {
         <Heading mb={6}>Log in</Heading>
         <FormControl isInvalid={error}>
           <Input
-            placeholder="test@test.com"
+            placeholder="test1@test.com"
             variant="filled"
             mb={3}
             type="email"
