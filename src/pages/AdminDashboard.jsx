@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import UserTab from "./UserTab"; // Fixed import statement
+import UserTab from "./UserTab";
 import ProductsTab from "./ProductsTab";
+import "./AdminDashboard.css"; // Import CSS file for styling
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("users");
@@ -11,14 +12,23 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <nav>
+      <nav className="tab-nav">
         <ul>
-          <li onClick={() => handleTabClick("users")}>Users</li>
-          <li onClick={() => handleTabClick("products")}>Products</li>
+          <li
+            className={activeTab === "users" ? "active" : ""}
+            onClick={() => handleTabClick("users")}
+          >
+            Users
+          </li>
+          <li
+            className={activeTab === "products" ? "active" : ""}
+            onClick={() => handleTabClick("products")}
+          >
+            Products
+          </li>
         </ul>
       </nav>
-      {activeTab === "users" && <UserTab />}{" "}
-      {/* Render UsersTab when activeTab is "users" */}
+      {activeTab === "users" && <UserTab />}
       {activeTab === "products" && <ProductsTab />}
     </div>
   );
