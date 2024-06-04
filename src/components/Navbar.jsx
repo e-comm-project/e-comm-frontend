@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import {
   Flex,
@@ -14,9 +14,11 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import { FiUser, FiShoppingCart, FiHeart } from "react-icons/fi";
+import { AuthContext } from "../context/auth.context"; // Import AuthContext
 
 function Navbar() {
   const [showAuthOptions, setShowAuthOptions] = useState(false);
+  const { user, logOutUser } = useContext(AuthContext); // Access user context and logOutUser function
 
   const handleAuthOptionsToggle = () => {
     setShowAuthOptions(!showAuthOptions);
@@ -76,7 +78,7 @@ function Navbar() {
 
       {/* Right side */}
       <Stack direction="row" spacing={4} align="center">
-        {/* Login Icon with Menu */}
+        {/* Login/Profile/Dashboard Icon with Menu */}
         <Menu onClose={handleMenuClose}>
           <MenuButton
             as={IconButton}
@@ -90,22 +92,44 @@ function Navbar() {
             onMouseLeave={handleAuthOptionsToggle}
             bg="white"
           >
-            <MenuItem
-              as={RouterLink}
-              to="/login"
-              color="black"
-              _hover={{ bg: "black", color: "blue.500" }}
-            >
-              Login
-            </MenuItem>
-            <MenuItem
-              as={RouterLink}
-              to="/signup"
-              color="black"
-              _hover={{ bg: "black", color: "blue.500" }}
-            >
-              Sign Up
-            </MenuItem>
+            {user ? (
+              <>
+                <MenuItem
+                  as={RouterLink}
+                  to={user.role === "admin" ? "/admin" : "/profile"}
+                  color="black"
+                  _hover={{ bg: "black", color: "blue.500" }}
+                >
+                  {user.role === "admin" ? "Dashboard" : "Profile"}
+                </MenuItem>
+                <MenuItem
+                  onClick={logOutUser}
+                  color="black"
+                  _hover={{ bg: "black", color: "blue.500" }}
+                >
+                  Logout
+                </MenuItem>
+              </>
+            ) : (
+              <>
+                <MenuItem
+                  as={RouterLink}
+                  to="/login"
+                  color="black"
+                  _hover={{ bg: "black", color: "blue.500" }}
+                >
+                  Login
+                </MenuItem>
+                <MenuItem
+                  as={RouterLink}
+                  to="/signup"
+                  color="black"
+                  _hover={{ bg: "black", color: "blue.500" }}
+                >
+                  Sign Up
+                </MenuItem>
+              </>
+            )}
           </MenuList>
         </Menu>
         {/* Favorite Icon */}
