@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import { CartContext } from "../context/cart.context.jsx";
 
 import {
@@ -117,13 +118,17 @@ const ProductList = () => {
             boxShadow="md"
             position="relative"
           >
-            <Image
-              src={product.image}
-              alt={product.name}
-              objectFit="cover"
-              width="100%"
-              height="100%"
-            />
+            <Link to={`/product/${product._id}`}>
+              {" "}
+              {/* Wrap Image in Link */}
+              <Image
+                src={product.image}
+                alt={product.name}
+                objectFit="cover"
+                width="100%"
+                height="100%"
+              />
+            </Link>
             <Box
               position="absolute"
               bottom="0"
