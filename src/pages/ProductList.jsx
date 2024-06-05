@@ -12,12 +12,16 @@ import {
   AlertIcon,
   Button,
   GridItem,
+  Select,
 } from "@chakra-ui/react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -25,8 +29,16 @@ const ProductList = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(`${API_URL}/products`);
-        setProducts(response.data);
+        const productData = response.data;
+        setProducts(productData);
+        setFilteredProducts(productData);
         setLoading(false);
+
+        // Extract categories
+        const categorySet = new Set(
+          productData.map((product) => product.category)
+        );
+        setCategories(Array.from(categorySet));
       } catch (error) {
         setError(error.message);
         setLoading(false);
@@ -66,6 +78,18 @@ const ProductList = () => {
     }
   };
 
+  const handleCategoryChange = (event) => {
+    const category = event.target.value;
+    setSelectedCategory(category);
+    if (category === "") {
+      setFilteredProducts(products);
+    } else {
+      setFilteredProducts(
+        products.filter((product) => product.category === category)
+      );
+    }
+  };
+
   if (loading) {
     return (
       <Box textAlign="center" mt="5">
@@ -88,6 +112,22 @@ const ProductList = () => {
       <Heading as="h1" mb="5">
         Product List
       </Heading>
+
+      <Box mb="5">
+        <Select
+          placeholder="Filter by Category"
+          onChange={handleCategoryChange}
+          value={selectedCategory}
+        >
+          <option value="">All Categories</option>
+          {categories.map((category, index) => (
+            <option key={index} value={category}>
+              {category}
+            </option>
+          ))}
+        </Select>
+      </Box>
+
       <Grid
         templateColumns={{
           base: "repeat(1, 1fr)",
@@ -97,7 +137,7 @@ const ProductList = () => {
         }}
         gap="6"
       >
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <GridItem
             key={product.id}
             borderWidth="1px"
