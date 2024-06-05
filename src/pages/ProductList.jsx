@@ -13,7 +13,6 @@ import {
   AlertIcon,
   Button,
   GridItem,
-  useConst,
 } from "@chakra-ui/react";
 
 const API_URL = import.meta.env.VITE_API_URL;
