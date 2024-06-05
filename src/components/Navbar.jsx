@@ -98,7 +98,7 @@ function Navbar() {
           color="black"
           mr={4}
         >
-          Women
+          All Products
         </Box>
       </Flex>
 

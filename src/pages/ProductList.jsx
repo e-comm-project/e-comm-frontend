@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import {
@@ -14,17 +14,24 @@ import {
   GridItem,
   Select,
   useToast,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
 } from "@chakra-ui/react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [filteredMenProducts, setFilteredMenProducts] = useState([]);
+  const [filteredWomenProducts, setFilteredWomenProducts] = useState([]);
+  const [selectedTab, setSelectedTab] = useState("Men"); // Default selected tab
   const toast = useToast();
 
   useEffect(() => {
@@ -33,7 +40,6 @@ const ProductList = () => {
         const response = await axios.get(`${API_URL}/products`);
         const productData = response.data;
         setProducts(productData);
-        setFilteredProducts(productData);
         setLoading(false);
 
         // Extract categories
@@ -50,6 +56,24 @@ const ProductList = () => {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    // Filter products when selectedCategory or selectedTab changes
+    const menFiltered = products.filter(
+      (product) =>
+        (!selectedCategory || product.category === selectedCategory) &&
+        product.genre === "Men"
+    );
+    setFilteredMenProducts(menFiltered);
+
+    const womenFiltered = products.filter(
+      (product) =>
+        (!selectedCategory || product.category === selectedCategory) &&
+        product.genre === "Women"
+    );
+    setFilteredWomenProducts(womenFiltered);
+  }, [selectedCategory, selectedTab, products]);
+
+  // Rest of the code...
   const handleAddToOrder = async (product) => {
     try {
       const token = localStorage.getItem("authToken");
@@ -95,15 +119,11 @@ const ProductList = () => {
   };
 
   const handleCategoryChange = (event) => {
-    const category = event.target.value;
-    setSelectedCategory(category);
-    if (category === "") {
-      setFilteredProducts(products);
-    } else {
-      setFilteredProducts(
-        products.filter((product) => product.category === category)
-      );
-    }
+    setSelectedCategory(event.target.value);
+  };
+
+  const handleTabChange = (tab) => {
+    setSelectedTab(tab);
   };
 
   if (loading) {
@@ -125,74 +145,146 @@ const ProductList = () => {
 
   return (
     <Box p="5">
-      <Heading as="h1" mb="5">
-        Product List
-      </Heading>
-
-      <Box mb="5">
-        <Select
-          placeholder="Filter by Category"
-          onChange={handleCategoryChange}
-          value={selectedCategory}
-        >
-          <option value="">All Categories</option>
-          {categories.map((category, index) => (
-            <option key={index} value={category}>
-              {category}
-            </option>
-          ))}
-        </Select>
-      </Box>
-
-      <Grid
-        templateColumns={{
-          base: "repeat(1, 1fr)",
-          sm: "repeat(2, 1fr)",
-          md: "repeat(3, 1fr)",
-          lg: "repeat(4, 1fr)",
-        }}
-        gap="6"
-      >
-        {filteredProducts.map((product) => (
-          <GridItem
-            key={product.id}
-            borderWidth="1px"
-            borderRadius="md"
-            overflow="hidden"
-            boxShadow="md"
-            position="relative"
-          >
-            <Link to={`/product/${product._id}`}>
-              <Image
-                src={product.image}
-                alt={product.name}
-                objectFit="cover"
-                width="100%"
-                height="100%"
-              />
-            </Link>
-            <Box
-              position="absolute"
-              bottom="0"
-              left="0"
-              width="100%"
-              bg="rgba(0, 0, 0, 0.6)"
-              color="white"
-              p="3"
-              textAlign="center"
-            >
-              <Heading as="h2" size="md" mb="2">
-                {product.name}
-              </Heading>
-              <Text mb="2">{product.description}</Text>
-              <Text fontWeight="bold">Price: ${product.price}</Text>
-              <Button onClick={() => handleAddToOrder(product)}>
-                Add to Order
-              </Button>
+      <Tabs onChange={handleTabChange}>
+        <TabList>
+          <Tab>Men</Tab>
+          <Tab>Women</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <Box mb="5">
+              <Select
+                placeholder="Filter by Category"
+                onChange={handleCategoryChange}
+                value={selectedCategory}
+              >
+                <option value="">All Categories</option>
+                {categories.map((category, index) => (
+                  <option key={index} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </Select>
             </Box>
-          </GridItem>
-        ))}
-      </Grid>
+
+            <Grid
+              templateColumns={{
+                base: "repeat(1, 1fr)",
+                sm: "repeat(2, 1fr)",
+                md: "repeat(3, 1fr)",
+                lg: "repeat(4, 1fr)",
+              }}
+              gap="6"
+            >
+              {filteredMenProducts.map((product) => (
+                <GridItem
+                  key={product.id}
+                  borderWidth="1px"
+                  borderRadius="md"
+                  overflow="hidden"
+                  boxShadow="md"
+                  position="relative"
+                >
+                  <Link to={`/product/${product._id}`}>
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      objectFit="cover"
+                      width="100%"
+                      height="100%"
+                    />
+                  </Link>
+                  <Box
+                    position="absolute"
+                    bottom="0"
+                    left="0"
+                    width="100%"
+                    bg="rgba(0, 0, 0, 0.6)"
+                    color="white"
+                    p="3"
+                    textAlign="center"
+                  >
+                    <Heading as="h2" size="md" mb="2">
+                      {product.name}
+                    </Heading>
+                    <Text mb="2">{product.description}</Text>
+                    <Text fontWeight="bold">Price: ${product.price}</Text>
+                    <Button onClick={() => handleAddToOrder(product)}>
+                      Add to Order
+                    </Button>
+                  </Box>
+                </GridItem>
+              ))}
+            </Grid>
+          </TabPanel>
+          <TabPanel>
+            <Box mb="5">
+              <Select
+                placeholder="Filter by Category"
+                onChange={handleCategoryChange}
+                value={selectedCategory}
+              >
+                <option value="">All Categories</option>
+                {categories.map((category, index) => (
+                  <option key={index} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </Select>
+            </Box>
+
+            <Grid
+              templateColumns={{
+                base: "repeat(1, 1fr)",
+                sm: "repeat(2, 1fr)",
+                md: "repeat(3, 1fr)",
+                lg: "repeat(4, 1fr)",
+              }}
+              gap="6"
+            >
+              {filteredWomenProducts.map((product) => (
+                <GridItem
+                  key={product.id}
+                  borderWidth="1px"
+                  borderRadius="md"
+                  overflow="hidden"
+                  boxShadow="md"
+                  position="relative"
+                >
+                  <Link to={`/product/${product._id}`}>
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      objectFit="cover"
+                      width="100%"
+                      height="100%"
+                    />
+                  </Link>
+                  <Box
+                    position="absolute"
+                    bottom="0"
+                    left="0"
+                    width="100%"
+                    bg="rgba(0, 0, 0, 0.6)"
+                    color="white"
+                    p="3"
+                    textAlign="center"
+                  >
+                    <Heading as="h2" size="md" mb="2">
+                      {product.name}
+                    </Heading>
+                    <Text mb="2">{product.description}</Text>
+                    <Text fontWeight="bold">Price: ${product.price}</Text>
+                    <Button onClick={() => handleAddToOrder(product)}>
+                      Add to Order
+                    </Button>
+                  </Box>
+                </GridItem>
+              ))}
+            </Grid>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </Box>
   );
 };
