@@ -10,6 +10,10 @@ import {
   Heading,
   Stack,
   Divider,
+  Flex,
+  useBreakpointValue,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
 import PaymentMethod from "../components/PaymentMethod"; // Import the PaymentMethod component
 
@@ -90,52 +94,68 @@ const Orders = () => {
   }
 
   return (
-    <Box>
-      <VStack spacing={6} mb={8}>
-        {orders.length === 0 ? (
-          <Text textAlign="center">No orders placed yet</Text>
-        ) : (
-          orders.map((order) => (
-            <Box
-              key={order._id}
-              borderWidth="1px"
-              borderRadius="lg"
-              overflow="hidden"
-              p="5"
-              w="100%"
-              boxShadow="md"
-            >
-              <Stack direction={["column", "row"]} spacing="4" align="center">
-                <Image
-                  boxSize="100px"
-                  objectFit="cover"
-                  src={order.products[0].product.image}
-                  alt={order.products[0].product.name}
-                  fallbackSrc="https://via.placeholder.com/100"
-                />
-                <Box flex="1">
-                  <Text fontSize="md" fontWeight="semibold" noOfLines={1}>
-                    {order.products[0].product.name}
-                  </Text>
-                  <Text fontSize="xl" fontWeight="bold" color="teal.500">
-                    Price: ${order.total}
-                  </Text>
-                </Box>
-                <Button
-                  colorScheme="red"
-                  onClick={() => handleDelete(order._id)}
-                  aria-label={`Delete order for ${order.products[0].product.name}`}
-                >
-                  Delete
-                </Button>
-              </Stack>
-              <Divider mt="4" />
-            </Box>
-          ))
-        )}
-      </VStack>
-      {orders.length > 0 && <PaymentMethod totalPrice={totalPrice} />}
-    </Box>
+    <Grid templateColumns={{ base: "1fr", md: "2fr 1fr" }} gap={4} p={4}>
+      <GridItem>
+        <VStack spacing={6} mb={8}>
+          {orders.length === 0 ? (
+            <Text textAlign="center">No orders placed yet</Text>
+          ) : (
+            orders.map((order) => (
+              <Box
+                key={order._id}
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                p="5"
+                w="100%"
+                boxShadow="md"
+                borderColor="gray.300"
+              >
+                <Stack direction={["column", "row"]} spacing="4" align="center">
+                  <Image
+                    boxSize="100px"
+                    objectFit="cover"
+                    src={order.products[0].product.image}
+                    alt={order.products[0].product.name}
+                    fallbackSrc="https://via.placeholder.com/100"
+                  />
+                  <Box flex="1">
+                    <Text fontSize="md" fontWeight="semibold" noOfLines={1}>
+                      {order.products[0].product.name}
+                    </Text>
+                    <Text fontSize="xl" fontWeight="bold" color="teal.500">
+                      Price: ${order.total}
+                    </Text>
+                  </Box>
+                  <Button
+                    colorScheme="red"
+                    onClick={() => handleDelete(order._id)}
+                    aria-label={`Delete order for ${order.products[0].product.name}`}
+                  >
+                    Delete
+                  </Button>
+                </Stack>
+                <Divider mt="4" />
+              </Box>
+            ))
+          )}
+        </VStack>
+      </GridItem>
+      {orders.length > 0 && (
+        <GridItem>
+          <Box
+            borderWidth="1px"
+            borderRadius="lg"
+            overflow="hidden"
+            boxShadow="md"
+            p="5"
+            borderColor="gray.300"
+          >
+            <PaymentMethod totalPrice={totalPrice} />
+          </Box>
+        </GridItem>
+      )}
+    </Grid>
   );
 };
 

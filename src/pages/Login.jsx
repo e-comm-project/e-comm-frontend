@@ -11,6 +11,7 @@ import {
   FormControl,
   FormErrorMessage,
   Box,
+  useToast,
 } from "@chakra-ui/react";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -21,6 +22,7 @@ function Login() {
   const [error, setError] = useState(undefined);
 
   const navigate = useNavigate();
+  const toast = useToast();
 
   const { storeToken, authenticateUser } = useContext(AuthContext);
 
@@ -37,6 +39,13 @@ function Login() {
       .then((response) => {
         storeToken(response.data.authToken);
         authenticateUser();
+        toast({
+          title: "Login successful.",
+          description: "You have been successfully logged in.",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
         navigate("/");
       })
       .catch((error) => {
