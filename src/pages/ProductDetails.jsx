@@ -10,6 +10,7 @@ import {
   Button,
   SimpleGrid,
   StackDivider,
+  useToast,
 } from "@chakra-ui/react";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -19,6 +20,7 @@ const ProductDetails = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const toast = useToast();
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -66,10 +68,23 @@ const ProductDetails = () => {
         }
       );
       console.log("Order added:", response.data);
-      // Optionally, you can provide feedback to the user that the order was added successfully
+      toast({
+        title: "Product added.",
+        description: `${product.name} has been added to your cart.`,
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error("Error adding order:", error);
-      // Optionally, provide error feedback to the user
+
+      toast({
+        title: "Error.",
+        description: "There was an error adding the product to your cart.",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
     }
   };
 
@@ -99,9 +114,6 @@ const ProductDetails = () => {
 
   return (
     <Box p="5">
-      <Heading as="h1" mb="5">
-        Product Details
-      </Heading>
       <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={10}>
         <Box>
           <Image

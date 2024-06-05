@@ -22,7 +22,14 @@ import {
   ModalCloseButton,
   Image,
   Flex, // Import Flex component
-  useBreakpointValue, // Import useBreakpointValue for responsive values
+  useBreakpointValue,
+  useToast,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay, // Import useBreakpointValue for responsive values
 } from "@chakra-ui/react";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -43,7 +50,15 @@ const ProductsTab = () => {
     countInStock: "",
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isDeleteDialogOpen,
+    onOpen: onOpenDeleteDialog,
+    onClose: onCloseDeleteDialog,
+  } = useDisclosure();
   const [currentProduct, setCurrentProduct] = useState(null);
+  const [productIdToDelete, setProductIdToDelete] = useState(null);
+  const toast = useToast();
+  const cancelRef = React.useRef();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -86,8 +101,22 @@ const ProductsTab = () => {
         countInStock: "",
       });
       onClose();
+      toast({
+        title: "Product added.",
+        description: "The product has been successfully added.",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error("Error adding product:", error);
+      toast({
+        title: "Error adding product.",
+        description: "There was an error adding the product.",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
     }
   };
 
@@ -133,20 +162,55 @@ const ProductsTab = () => {
         countInStock: "",
       });
       onClose();
+      toast({
+        title: "Product updated.",
+        description: "The product has been successfully updated.",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error("Error updating product:", error);
+      toast({
+        title: "Error updating product.",
+        description: "There was an error updating the product.",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
     }
   };
+  const handleDeleteClick = (productId) => {
+    setProductIdToDelete(productId);
+    onOpenDeleteDialog();
+  };
 
-  const handleDeleteProduct = async (productId) => {
+  const handleDeleteProduct = async () => {
     try {
       const token = localStorage.getItem("authToken");
-      await axios.delete(`${API_URL}/admin/products/${productId}`, {
+      await axios.delete(`${API_URL}/admin/products/${productIdToDelete}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setProducts(products.filter((product) => product._id !== productId));
+      setProducts(
+        products.filter((product) => product._id !== productIdToDelete)
+      );
+      onCloseDeleteDialog();
+      toast({
+        title: "Product deleted.",
+        description: "The product has been successfully deleted.",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error("Error deleting product:", error);
+      toast({
+        title: "Error deleting product.",
+        description: "There was an error deleting the product.",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
     }
   };
 
@@ -206,7 +270,7 @@ const ProductsTab = () => {
                 </Button>
                 <Button
                   colorScheme="red"
-                  onClick={() => handleDeleteProduct(product._id)}
+                  onClick={() => handleDeleteClick(product._id)}
                 >
                   Delete
                 </Button>
@@ -311,6 +375,33 @@ const ProductsTab = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
+      <AlertDialog
+        isOpen={isDeleteDialogOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onCloseDeleteDialog}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Product
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure you want to delete this product? This action cannot
+              be undone.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onCloseDeleteDialog}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={handleDeleteProduct} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </Box>
   );
 };

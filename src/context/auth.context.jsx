@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@chakra-ui/react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -12,6 +13,7 @@ function AuthProviderWrapper(props) {
   const [user, setUser] = useState(null);
   const [authError, setAuthError] = useState(null);
   const navigate = useNavigate();
+  const toast = useToast();
 
   const storeToken = (token) => {
     localStorage.setItem("authToken", token);
@@ -62,6 +64,13 @@ function AuthProviderWrapper(props) {
     removeToken();
     authenticateUser();
     navigate("/");
+    toast({
+      title: "Logged out",
+      description: "You have successfully logged out.",
+      status: "info",
+      duration: 5000,
+      isClosable: true,
+    });
   };
 
   useEffect(() => {

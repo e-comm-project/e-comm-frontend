@@ -9,6 +9,13 @@ import {
   Spinner,
   Alert,
   AlertIcon,
+  useDisclosure,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
 } from "@chakra-ui/react";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -17,6 +24,9 @@ const UsersTab = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userIdToDelete, setUserIdToDelete] = useState(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = React.useRef();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -43,9 +53,14 @@ const UsersTab = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(users.filter((user) => user._id !== userId));
+      onClose();
     } catch (error) {
       console.error("Error deleting user:", error);
     }
+  };
+  const handleDeleteClick = (userId) => {
+    setUserIdToDelete(userId);
+    onOpen();
   };
 
   if (loading) {
@@ -77,11 +92,38 @@ const UsersTab = () => {
           <Text>
             {user.username} - {user.email} - {user.role}
           </Text>
-          <Button colorScheme="red" onClick={() => handleDeleteUser(user._id)}>
+          <Button colorScheme="red" onClick={() => handleDeleteClick(user._id)}>
             Delete
           </Button>
         </Box>
       ))}
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete User
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure you want to delete this user? This action cannot be
+              undone.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={handleDeleteUser} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </VStack>
   );
 };
