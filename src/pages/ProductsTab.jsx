@@ -41,6 +41,7 @@ const ProductsTab = () => {
     rating: "",
     numReviews: "",
     countInStock: "",
+    genre: "",
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [currentProduct, setCurrentProduct] = useState(null);
@@ -84,6 +85,7 @@ const ProductsTab = () => {
         rating: "",
         numReviews: "",
         countInStock: "",
+        genre: "",
       });
       onClose();
     } catch (error) {
@@ -103,6 +105,7 @@ const ProductsTab = () => {
       rating: product.rating,
       numReviews: product.numReviews,
       countInStock: product.countInStock,
+      genre: product.genre,
     });
     onOpen();
   };
@@ -131,6 +134,7 @@ const ProductsTab = () => {
         rating: "",
         numReviews: "",
         countInStock: "",
+        genre: "",
       });
       onClose();
     } catch (error) {
@@ -293,6 +297,14 @@ const ProductsTab = () => {
               <Input
                 name="countInStock"
                 value={form.countInStock}
+                onChange={handleInputChange}
+              />
+            </FormControl>
+            <FormControl mb={4}>
+              <FormLabel>Genre</FormLabel>
+              <Input
+                name="genre"
+                value={form.genre}
                 onChange={handleInputChange}
               />
             </FormControl>
