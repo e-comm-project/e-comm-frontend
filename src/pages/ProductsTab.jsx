@@ -20,7 +20,9 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Image, // Add Image component
+  Image,
+  Flex, // Import Flex component
+  useBreakpointValue, // Import useBreakpointValue for responsive values
 } from "@chakra-ui/react";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -176,35 +178,40 @@ const ProductsTab = () => {
             borderWidth={1}
             borderRadius="lg"
             w="100%"
-            d="flex"
-            justifyContent="space-between"
-            alignItems="center"
+            boxShadow="md"
           >
-            <HStack>
-              <Image
-                boxSize="100px"
-                objectFit="cover"
-                src={product.image}
-                alt={product.name}
-              />
-              <Text>
-                {product.name} - {product.description} - ${product.price}
-              </Text>
-            </HStack>
-            <HStack spacing={4}>
-              <Button
-                colorScheme="blue"
-                onClick={() => handleEditProduct(product)}
-              >
-                Edit
-              </Button>
-              <Button
-                colorScheme="red"
-                onClick={() => handleDeleteProduct(product._id)}
-              >
-                Delete
-              </Button>
-            </HStack>
+            <Flex
+              direction={{ base: "column", md: "row" }} // Adjust flex direction based on screen size
+              justifyContent="space-between"
+              alignItems={{ base: "flex-start", md: "center" }} // Align items based on screen size
+              w="100%"
+            >
+              <HStack spacing={4} mb={{ base: 4, md: 0 }}>
+                <Image
+                  boxSize="100px"
+                  objectFit="cover"
+                  src={product.image}
+                  alt={product.name}
+                />
+                <Text>
+                  {product.name} - {product.description} - ${product.price}
+                </Text>
+              </HStack>
+              <HStack spacing={4}>
+                <Button
+                  colorScheme="blue"
+                  onClick={() => handleEditProduct(product)}
+                >
+                  Edit
+                </Button>
+                <Button
+                  colorScheme="red"
+                  onClick={() => handleDeleteProduct(product._id)}
+                >
+                  Delete
+                </Button>
+              </HStack>
+            </Flex>
           </Box>
         ))}
       </VStack>
