@@ -1,7 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import SlideComponent from "../components/SlideComponent";
-import { Box, Grid, Image, Text, Button, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Grid,
+  Image,
+  Text,
+  Button,
+  Heading,
+  Center,
+  Flex,
+} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { CartContext } from "../context/cart.context.jsx";
 
@@ -75,10 +84,10 @@ function HomePage() {
   }
 
   // Randomly select three products for discount items
-  const randomDiscountProducts = getRandomProducts(products, 3);
+  const randomDiscountProducts = getRandomProducts(products, 4);
 
   // Randomly select three products for popular items
-  const randomPopularProducts = getRandomProducts(products, 3);
+  const randomPopularProducts = getRandomProducts(products, 4);
 
   return (
     <div>
@@ -86,8 +95,11 @@ function HomePage() {
       <Heading as="h1" size="xl" textAlign="center">
         Discount
       </Heading>
-      {/* Render random products with 15% discount */}
-      <Grid templateColumns="repeat(3, 1fr)" gap={4}>
+      <Grid
+        templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(4, 1fr)" }}
+        gap={4}
+        p={4}
+      >
         {randomDiscountProducts.map((product) => (
           <ProductBox
             key={product.id}
@@ -101,7 +113,11 @@ function HomePage() {
         Popular Items
       </Heading>
       {/* Render random popular items */}
-      <Grid templateColumns="repeat(3, 1fr)" gap={4}>
+      <Grid
+        templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(4, 1fr)" }}
+        gap={4}
+        p={4}
+      >
         {randomPopularProducts.map((product) => (
           <ProductBox
             key={product.id}
@@ -127,30 +143,42 @@ function getRandomProducts(products, count) {
   return randomProducts;
 }
 
-// Product box component to display individual product
 function ProductBox({ product, onClick }) {
   return (
     <Box
+      as={Link}
+      to={`/product/${product._id}`}
       borderWidth="1px"
       borderRadius="lg"
       overflow="hidden"
       boxShadow="lg"
       transition="transform 0.3s ease-in-out"
       _hover={{ transform: "scale(1.05)" }}
+      height="100%"
     >
-      <Image src={product.image} alt={product.name} />
-      <Box p="6">
-        <Text fontWeight="semibold">{product.name}</Text>
-        <Text mt="2">
-          <Text as="span" textDecoration="line-through" mr="2">
-            ${product.price}
+      <Flex direction="column" height="100%">
+        <Center flex="1">
+          <Image
+            src={product.image}
+            alt={product.name}
+            maxH="300px"
+            maxW="300px"
+            objectFit="contain"
+          />
+        </Center>
+        <Box p="6" textAlign="center" flex="1">
+          <Text fontWeight="semibold">{product.name}</Text>
+          <Text mt="2">
+            <Text as="span" textDecoration="line-through" mr="2">
+              ${product.price}
+            </Text>
+            ${(product.price * 0.85).toFixed(2)} (15% off)
           </Text>
-          ${(product.price * 0.85).toFixed(2)} (15% off)
-        </Text>
-        <Button mt="4" onClick={onClick}>
-          Add to Order
-        </Button>
-      </Box>
+          <Button mt="4" onClick={onClick}>
+            Add to Order
+          </Button>
+        </Box>
+      </Flex>
     </Box>
   );
 }
