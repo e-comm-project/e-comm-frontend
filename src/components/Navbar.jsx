@@ -107,9 +107,8 @@ function Navbar() {
       {/* Center Logo */}
       <Box>
         <Image
-          src="https://i.ibb.co/6v77dhS/66.jpg"
+          src="https://i.ibb.co/vPR2WSP/ezgif-3-3d6b3770df.jpg"
           alt="Logo"
-          boxSize={{ base: "60px", md: "50px", lg: "60px" }}
         />
       </Box>
 
