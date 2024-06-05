@@ -13,6 +13,7 @@ import {
   Button,
   GridItem,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -24,6 +25,7 @@ const ProductList = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const toast = useToast();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -73,8 +75,22 @@ const ProductList = () => {
         }
       );
       console.log("Order added:", response.data);
+      toast({
+        title: "Product added.",
+        description: `${product.name} has been added to your cart.`,
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error("Error adding order:", error);
+      toast({
+        title: "Error.",
+        description: "There was an error adding the product to your cart.",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
     }
   };
 

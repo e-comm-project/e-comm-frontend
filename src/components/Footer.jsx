@@ -1,5 +1,5 @@
 import React from "react";
-import { Link as RouterLink } from "react-router-dom"; // Import Link from React Router
+import { Link as RouterLink } from "react-router-dom";
 import {
   Box,
   chakra,
@@ -8,6 +8,7 @@ import {
   Text,
   useColorModeValue,
   VisuallyHidden,
+  Link,
 } from "@chakra-ui/react";
 import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 
@@ -22,8 +23,7 @@ const Logo = (props) => {
   );
 };
 
-const SocialButton = ({ children, label, to }) => {
-  // Change 'href' prop to 'to'
+const SocialButton = ({ children, label, href }) => {
   return (
     <chakra.button
       bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
@@ -31,8 +31,9 @@ const SocialButton = ({ children, label, to }) => {
       w={8}
       h={8}
       cursor={"pointer"}
-      as={RouterLink} // Use RouterLink instead of 'a' tag
-      to={to} // Use 'to' prop for navigation
+      as="a"
+      href={href}
+      target="_blank"
       display={"inline-flex"}
       alignItems={"center"}
       justifyContent={"center"}
@@ -63,13 +64,10 @@ const Footer = () => {
       >
         <Logo />
         <Stack direction={"row"} spacing={6}>
-          <RouterLink to={"/"}>Home</RouterLink> {/* Change to RouterLink */}
+          <RouterLink to={"/"}>Home</RouterLink>
           <RouterLink to={"/about"}>About</RouterLink>{" "}
-          {/* Change to RouterLink */}
           <RouterLink to={"/contact"}>Contact Us</RouterLink>{" "}
-          {/* Change to RouterLink */}
           <RouterLink to={"/products"}>Women</RouterLink>{" "}
-          {/* Change to RouterLink */}
         </Stack>
       </Container>
 
@@ -89,19 +87,13 @@ const Footer = () => {
         >
           <Text>© 2024 AboutShe </Text>
           <Stack direction={"row"} spacing={6}>
-            <SocialButton label={"Twitter"} to={"/twitter"}>
-              {" "}
-              {/* Change to RouterLink */}
+            <SocialButton label={"Twitter"} href="https://twitter.com">
               <FaTwitter />
             </SocialButton>
-            <SocialButton label={"YouTube"} to={"/youtube"}>
-              {" "}
-              {/* Change to RouterLink */}
+            <SocialButton label={"YouTube"} href="https://youtube.com">
               <FaYoutube />
             </SocialButton>
-            <SocialButton label={"Instagram"} to={"/instagram"}>
-              {" "}
-              {/* Change to RouterLink */}
+            <SocialButton label={"Instagram"} href="https://instagram.com">
               <FaInstagram />
             </SocialButton>
           </Stack>
