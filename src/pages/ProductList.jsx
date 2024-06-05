@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { CartContext } from "../context/cart.context.jsx";
 import {
   Box,
   Grid,
@@ -21,7 +20,6 @@ const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const cartcont = useContext(CartContext);
 
   useEffect(() => {
     const fetchProducts = async () => {
