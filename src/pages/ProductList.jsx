@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { Link } from "react-router-dom";
 import { CartContext } from "../context/cart.context.jsx";
-
 import {
   Box,
   Grid,
@@ -42,24 +41,18 @@ const ProductList = () => {
 
   const handleAddToOrder = async (product) => {
     try {
-      // Retrieve JWT token from local storage
       const token = localStorage.getItem("authToken");
-
-      // Check if token exists
       if (!token) {
-        // Optionally, handle the case when the token is missing
         console.error("Auth token not found in local storage");
         return;
       }
-
-      // Make request to add order with JWT token in headers
       const response = await axios.post(
         `${API_URL}/orders`,
         {
           products: [
             {
               product: product._id,
-              quantity: 1, // Assuming you always add one quantity at a time
+              quantity: 1,
               priceAtPurchase: product.price,
             },
           ],
@@ -71,10 +64,8 @@ const ProductList = () => {
         }
       );
       console.log("Order added:", response.data);
-      // Optionally, you can provide feedback to the user that the order was added successfully
     } catch (error) {
       console.error("Error adding order:", error);
-      // Optionally, provide error feedback to the user
     }
   };
 
@@ -119,8 +110,6 @@ const ProductList = () => {
             position="relative"
           >
             <Link to={`/product/${product._id}`}>
-              {" "}
-              {/* Wrap Image in Link */}
               <Image
                 src={product.image}
                 alt={product.name}
