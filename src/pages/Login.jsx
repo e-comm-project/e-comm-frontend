@@ -3,7 +3,6 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 
-import React from "react";
 import {
   Flex,
   Button,
@@ -11,6 +10,7 @@ import {
   Input,
   FormControl,
   FormErrorMessage,
+  Box,
 } from "@chakra-ui/react";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -19,11 +19,10 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(undefined);
-  const [role, setRole] = useState([]);
 
   const navigate = useNavigate();
 
-  const { storeToken, authenticateUser, user } = useContext(AuthContext);
+  const { storeToken, authenticateUser } = useContext(AuthContext);
 
   const handleEmail = (e) => setEmail(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
@@ -31,13 +30,14 @@ function Login() {
   const handleLoginSubmit = (e) => {
     e.preventDefault();
 
-    const requestBody = { email, password, role };
+    const requestBody = { email, password };
 
     axios
       .post(`${API_URL}/auth/login`, requestBody)
       .then((response) => {
         storeToken(response.data.authToken);
         authenticateUser();
+        navigate("/");
       })
       .catch((error) => {
         const errorMessage = error.response.data.message;
@@ -47,15 +47,17 @@ function Login() {
 
   return (
     <Flex height="100vh" alignItems="center" justifyContent="center">
-      <Flex
+      <Box
+        width={{ base: "90%", md: "400px" }}
         as="form"
-        direction="column"
-        background="gray.300"
-        p={12}
-        rounded={6}
+        p={6}
+        rounded="md"
+        bg="gray.300"
         onSubmit={handleLoginSubmit}
       >
-        <Heading mb={6}>Log in</Heading>
+        <Heading mb={6} textAlign="center">
+          Log in
+        </Heading>
         <FormControl isInvalid={error}>
           <Input
             placeholder="test1@test.com"
@@ -75,38 +77,14 @@ function Login() {
           />
           {error && <FormErrorMessage>{error}</FormErrorMessage>}
         </FormControl>
-        <Button mb={6} colorScheme="teal" type="submit">
+        <Button mb={6} colorScheme="teal" type="submit" width="full">
           Log in
         </Button>
         <p>
           Don't have an account? <Link to="/signup">Sign up</Link>
         </p>
-      </Flex>
+      </Box>
     </Flex>
-    //   <div>
-    //     <form onSubmit={handleLoginSubmit}>
-    //       <h2>Log In</h2>
-    //       {error && <div>{error}</div>}
-    //       <div>
-    //         <label htmlFor="email">Email:</label>
-    //         <input type="email" id="email" value={email} onChange={handleEmail} />
-    //       </div>
-    //       <div>
-    //         <label htmlFor="password">Password:</label>
-    //         <input
-    //           type="password"
-    //           id="password"
-    //           value={password}
-    //           onChange={handlePassword}
-    //         />
-    //       </div>
-    //       <button type="submit">Log In</button>
-    //       <p>
-    //         Don't have an account? <Link to="/signup">Sign up</Link>
-    //       </p>
-    //     </form>
-    //   </div>
-    // );
   );
 }
 

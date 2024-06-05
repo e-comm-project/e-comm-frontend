@@ -12,13 +12,23 @@ import {
   Icon,
   Image,
   Spacer,
+  useDisclosure,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  DrawerHeader,
+  DrawerBody,
+  useColorModeValue,
 } from "@chakra-ui/react";
-import { FiUser, FiShoppingCart, FiHeart } from "react-icons/fi";
+import { FiUser, FiShoppingCart, FiHeart, FiMenu } from "react-icons/fi";
 import { AuthContext } from "../context/auth.context"; // Import AuthContext
 
 function Navbar() {
-  const [showAuthOptions, setShowAuthOptions] = useState(false);
   const { user, logOutUser } = useContext(AuthContext); // Access user context and logOutUser function
+  const { isOpen, onOpen, onClose } = useDisclosure(); // For mobile menu toggle
+
+  const [showAuthOptions, setShowAuthOptions] = useState(false);
 
   const handleAuthOptionsToggle = () => {
     setShowAuthOptions(!showAuthOptions);
@@ -39,26 +49,55 @@ function Navbar() {
       align="center"
       justify="space-between"
       wrap="wrap"
-      padding={4}
-      bg="dark"
-      color="white"
+      padding={{ base: 3, md: 4 }}
+      bg="gray.100"
+      color="gray.800"
     >
       {/* Left side */}
-      <Flex align="center" mr={5}>
-        {/* Home Link */}
-        <Box as={RouterLink} to="/" color="black" mr={4}>
+      <Flex align="center">
+        <Box display={{ base: "flex", md: "none" }} alignItems="center">
+          <IconButton
+            onClick={onOpen}
+            icon={<FiMenu />}
+            variant="outline"
+            aria-label="Open Menu"
+            isRound
+          />
+        </Box>
+        <Box
+          as={RouterLink}
+          to="/"
+          display={{ base: "none", md: "block" }}
+          color="black"
+          mr={4}
+        >
           Home
         </Box>
-        {/* Contact Us Link */}
-        <Box as={RouterLink} to="/contact" color="black" mr={4}>
+        <Box
+          as={RouterLink}
+          to="/contact"
+          display={{ base: "none", md: "block" }}
+          color="black"
+          mr={4}
+        >
           Contact Us
         </Box>
-        {/* About Us Link */}
-        <Box as={RouterLink} to="/about" color="black" mr={4}>
+        <Box
+          as={RouterLink}
+          to="/about"
+          display={{ base: "none", md: "block" }}
+          color="black"
+          mr={4}
+        >
           About Us
         </Box>
-        {/* Women Link */}
-        <Box as={RouterLink} to="/products" color="black" mr={4}>
+        <Box
+          as={RouterLink}
+          to="/products"
+          display={{ base: "none", md: "block" }}
+          color="black"
+          mr={4}
+        >
           Women
         </Box>
       </Flex>
@@ -70,14 +109,19 @@ function Navbar() {
         <Image
           src="https://i.ibb.co/6v77dhS/66.jpg"
           alt="Logo"
-          boxSize="absolute"
+          boxSize={{ base: "60px", md: "50px", lg: "60px" }}
         />
       </Box>
 
       <Spacer />
 
       {/* Right side */}
-      <Stack direction="row" spacing={4} align="center">
+      <Stack
+        direction="row"
+        spacing={4}
+        align="center"
+        display={{ base: "none", md: "flex" }}
+      >
         {/* Login/Profile/Dashboard Icon with Menu */}
         <Menu onClose={handleMenuClose}>
           <MenuButton
@@ -142,6 +186,103 @@ function Navbar() {
           aria-label="Cart"
         />
       </Stack>
+
+      {/* Mobile menu */}
+      <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
+        <DrawerOverlay>
+          <DrawerContent>
+            <DrawerCloseButton />
+            <DrawerHeader borderBottomWidth="1px">Menu</DrawerHeader>
+            <DrawerBody>
+              <Stack as={"nav"} spacing={4}>
+                <Box as={RouterLink} to="/" color="black" onClick={onClose}>
+                  Home
+                </Box>
+                <Box
+                  as={RouterLink}
+                  to="/contact"
+                  color="black"
+                  onClick={onClose}
+                >
+                  Contact Us
+                </Box>
+                <Box
+                  as={RouterLink}
+                  to="/about"
+                  color="black"
+                  onClick={onClose}
+                >
+                  About Us
+                </Box>
+                <Box
+                  as={RouterLink}
+                  to="/products"
+                  color="black"
+                  onClick={onClose}
+                >
+                  Women
+                </Box>
+                {user ? (
+                  <>
+                    <Box
+                      as={RouterLink}
+                      to={user.role === "admin" ? "/admin" : "/profile"}
+                      color="black"
+                      onClick={onClose}
+                    >
+                      {user.role === "admin" ? "Dashboard" : "Profile"}
+                    </Box>
+                    <Box
+                      color="black"
+                      onClick={() => {
+                        logOutUser();
+                        onClose();
+                      }}
+                    >
+                      Logout
+                    </Box>
+                  </>
+                ) : (
+                  <>
+                    <Box
+                      as={RouterLink}
+                      to="/login"
+                      color="black"
+                      onClick={onClose}
+                    >
+                      Login
+                    </Box>
+                    <Box
+                      as={RouterLink}
+                      to="/signup"
+                      color="black"
+                      onClick={onClose}
+                    >
+                      Sign Up
+                    </Box>
+                  </>
+                )}
+                <Box
+                  as={RouterLink}
+                  to="/favorites"
+                  color="black"
+                  onClick={onClose}
+                >
+                  <Icon as={FiHeart} /> Favorites
+                </Box>
+                <Box
+                  as={RouterLink}
+                  to="/orders"
+                  color="black"
+                  onClick={onClose}
+                >
+                  <Icon as={FiShoppingCart} /> Cart
+                </Box>
+              </Stack>
+            </DrawerBody>
+          </DrawerContent>
+        </DrawerOverlay>
+      </Drawer>
     </Flex>
   );
 }

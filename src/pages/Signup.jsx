@@ -8,9 +8,7 @@ import {
   FormControl,
   FormLabel,
   Input,
-  InputGroup,
   HStack,
-  InputRightElement,
   Stack,
   Button,
   Heading,
@@ -48,22 +46,25 @@ function Signup() {
 
   return (
     <Flex
-      height={"80vh"}
+      height={"100vh"}
       align={"center"}
       justify={"center"}
       bg={useColorModeValue("gray.50", "gray.800")}
-      as="form"
-      direction="column"
-      onSubmit={handleSubmit}
-      width="full"
-      px={8}
+      px={4}
     >
-      <Stack spacing={8} mx={"auto"} py={6} px={3} width="2xl">
+      <Stack
+        spacing={8}
+        mx={"auto"}
+        maxW={{ base: "full", md: "lg" }}
+        py={12}
+        px={6}
+        width={{ base: "100%", md: "md" }}
+      >
         <Stack align={"center"}>
-          <Heading fontSize={"4xl"} textAlign={"center"}>
+          <Heading fontSize={{ base: "2xl", md: "4xl" }} textAlign={"center"}>
             Sign up
           </Heading>
-          <Text fontSize={"lg"} color={"gray.600"}>
+          <Text fontSize={{ base: "md", md: "lg" }} color={"gray.600"}>
             to enjoy all of our cool features ✌️
           </Text>
         </Stack>
@@ -79,21 +80,17 @@ function Signup() {
                 {error}
               </Text>
             )}
-            <HStack>
-              <Box width="full">
-                <FormControl id="name" isRequired>
-                  <FormLabel>Name</FormLabel>
-                  <Input
-                    placeholder="Name"
-                    mb={3}
-                    type="text"
-                    value={name}
-                    onChange={handleName}
-                    size="lg"
-                  />
-                </FormControl>
-              </Box>
-            </HStack>
+            <FormControl id="name" isRequired>
+              <FormLabel>Name</FormLabel>
+              <Input
+                placeholder="Name"
+                mb={3}
+                type="text"
+                value={name}
+                onChange={handleName}
+                size="lg"
+              />
+            </FormControl>
             <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
               <Input
@@ -124,6 +121,7 @@ function Signup() {
                 _hover={{
                   bg: "blue.500",
                 }}
+                onClick={handleSubmit}
               >
                 Sign up
               </Button>
@@ -140,32 +138,6 @@ function Signup() {
         </Box>
       </Stack>
     </Flex>
-    // <div>
-    //   <form onSubmit={handleSubmit}>
-    //     <h2>Sign Up</h2>
-    //     <div>
-    //       <label htmlFor="name">Name:</label>
-    //       <input type="text" id="name" value={name} onChange={handleName} />
-    //     </div>
-    //     <div>
-    //       <label htmlFor="email">Email:</label>
-    //       <input type="email" id="email" value={email} onChange={handleEmail} />
-    //     </div>
-    //     <div>
-    //       <label htmlFor="password">Password:</label>
-    //       <input
-    //         type="password"
-    //         id="password"
-    //         value={password}
-    //         onChange={handlePassword}
-    //       />
-    //     </div>
-    //     <button type="submit">Sign Up</button>
-    //     <p>
-    //       Already have an account? <Link to="/login">Log in</Link>
-    //     </p>
-    //   </form>
-    // </div>
   );
 }
 

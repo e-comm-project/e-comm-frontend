@@ -142,9 +142,10 @@ export default function Contact() {
               <Box
                 bg={useColorModeValue("white", "gray.700")}
                 borderRadius="lg"
-                p={8}
+                p={{ base: 5, sm: 8 }}
                 color={useColorModeValue("gray.700", "whiteAlpha.900")}
                 shadow="base"
+                w={{ base: "100%", md: "auto" }}
               >
                 <VStack spacing={5}>
                   <FormControl isRequired>
