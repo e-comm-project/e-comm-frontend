@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useMatch, useLocation } from "react-router-dom";
 import "./App.css";
 import HomePage from "./pages/HomePage";
 import ProductDetails from "./pages/ProductDetails";
@@ -18,32 +18,43 @@ import Orders from "./pages/Orders";
 import IsAdmin from "./components/IsAdmin";
 
 function App() {
+  const location = useLocation();
+
+  const isNotFoundPage =
+    location.pathname !== "/" &&
+    location.pathname !== "/signup" &&
+    location.pathname !== "/login" &&
+    location.pathname !== "/profile" &&
+    location.pathname !== "/admin" &&
+    location.pathname !== "/products" &&
+    !location.pathname.startsWith("/product/") &&
+    location.pathname !== "/orders" &&
+    location.pathname !== "/about" &&
+    location.pathname !== "/contact";
   return (
     <CartProvider>
-      <div className="app">
-        <Header />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route
-            path="/admin"
-            element={
-              <IsAdmin>
-                <AdminDashboard />
-              </IsAdmin>
-            }
-          />
-          <Route path="/products" element={<ProductList />} />
-          <Route path="/product/:productId" element={<ProductDetails />} />
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/about" element={<AboutUs />} />
-          <Route path="/contact" element={<ContactUs />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Footer />
-      </div>
+      {!isNotFoundPage && <Header />}
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route
+          path="/admin"
+          element={
+            <IsAdmin>
+              <AdminDashboard />
+            </IsAdmin>
+          }
+        />
+        <Route path="/products" element={<ProductList />} />
+        <Route path="/product/:productId" element={<ProductDetails />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/contact" element={<ContactUs />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      {!isNotFoundPage && <Footer />}
     </CartProvider>
   );
 }
