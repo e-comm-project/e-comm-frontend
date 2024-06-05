@@ -67,7 +67,7 @@ const Footer = () => {
           <RouterLink to={"/"}>Home</RouterLink>
           <RouterLink to={"/about"}>About</RouterLink>{" "}
           <RouterLink to={"/contact"}>Contact Us</RouterLink>{" "}
-          <RouterLink to={"/products"}>Women</RouterLink>{" "}
+          <RouterLink to={"/products"}>All Products</RouterLink>{" "}
         </Stack>
       </Container>
 
