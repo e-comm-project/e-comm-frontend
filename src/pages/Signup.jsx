@@ -15,6 +15,7 @@ import {
   Text,
   useColorModeValue,
   Link,
+  useToast,
 } from "@chakra-ui/react";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -25,6 +26,7 @@ function Signup() {
   const [name, setName] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const toast = useToast();
 
   const handleEmail = (e) => setEmail(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
@@ -36,6 +38,13 @@ function Signup() {
     axios
       .post(`${API_URL}/auth/signup`, requestBody)
       .then(() => {
+        toast({
+          title: "Signup successful.",
+          description: "Your account has been created.",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
         navigate("/login");
       })
       .catch((error) => {

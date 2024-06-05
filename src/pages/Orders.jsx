@@ -14,6 +14,7 @@ import {
   useBreakpointValue,
   Grid,
   GridItem,
+  useToast,
 } from "@chakra-ui/react";
 import PaymentMethod from "../components/PaymentMethod"; // Import the PaymentMethod component
 
@@ -24,6 +25,7 @@ const Orders = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
+  const toast = useToast();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -72,8 +74,22 @@ const Orders = () => {
       });
 
       setOrders(orders.filter((order) => order._id !== orderId));
+      toast({
+        title: "Order deleted.",
+        description: "The order has been successfully deleted.",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error("Error deleting order:", error);
+      toast({
+        title: "Error.",
+        description: "There was an error deleting the order.",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
     }
   };
 

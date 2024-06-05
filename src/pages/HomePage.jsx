@@ -10,6 +10,7 @@ import {
   Heading,
   Center,
   Flex,
+  useToast,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { CartContext } from "../context/cart.context.jsx";
@@ -21,6 +22,7 @@ function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const cartcont = useContext(CartContext);
+  const toast = useToast();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -49,14 +51,13 @@ function HomePage() {
         return;
       }
 
-      // Make request to add order with JWT token in headers
       const response = await axios.post(
         `${API_URL}/orders`,
         {
           products: [
             {
               product: product._id,
-              quantity: 1, // Assuming you always add one quantity at a time
+              quantity: 1,
               priceAtPurchase: product.price,
             },
           ],
@@ -68,10 +69,22 @@ function HomePage() {
         }
       );
       console.log("Order added:", response.data);
-      // Optionally, you can provide feedback to the user that the order was added successfully
+      toast({
+        title: "Product added.",
+        description: `${product.name} has been added to your order.`,
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error("Error adding order:", error);
-      // Optionally, provide error feedback to the user
+      toast({
+        title: "Error.",
+        description: "There was an error adding the product to your order.",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
     }
   };
 
