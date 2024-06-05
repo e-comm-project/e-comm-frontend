@@ -11,7 +11,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div>
+    <div className="admin-dashboard">
       <nav className="tab-nav">
         <ul>
           <li
@@ -28,8 +28,10 @@ const AdminDashboard = () => {
           </li>
         </ul>
       </nav>
-      {activeTab === "users" && <UserTab />}
-      {activeTab === "products" && <ProductsTab />}
+      <div className="tab-content">
+        {activeTab === "users" && <UserTab />}
+        {activeTab === "products" && <ProductsTab />}
+      </div>
     </div>
   );
 };

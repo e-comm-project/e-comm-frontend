@@ -20,6 +20,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  Image, // Add Image component
 } from "@chakra-ui/react";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -179,9 +180,17 @@ const ProductsTab = () => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Text>
-              {product.name} - {product.description} - ${product.price}
-            </Text>
+            <HStack>
+              <Image
+                boxSize="100px"
+                objectFit="cover"
+                src={product.image}
+                alt={product.name}
+              />
+              <Text>
+                {product.name} - {product.description} - ${product.price}
+              </Text>
+            </HStack>
             <HStack spacing={4}>
               <Button
                 colorScheme="blue"

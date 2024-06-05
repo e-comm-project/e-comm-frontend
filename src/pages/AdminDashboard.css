@@ -1,16 +1,40 @@
+.admin-dashboard {
+  display: flex;
+  height: 100vh;
+}
+
+.tab-nav {
+  width: 200px;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+}
+
 .tab-nav ul {
   list-style-type: none;
   padding: 0;
+  margin: 0;
 }
 
 .tab-nav li {
-  display: inline-block;
   padding: 10px 20px;
   cursor: pointer;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .tab-nav li.active {
   background-color: #007bff;
   color: #fff;
-  border-radius: 5px;
+}
+
+.tab-nav li:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.tab-content {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
 }
