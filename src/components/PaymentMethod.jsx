@@ -30,6 +30,7 @@ const PaymentMethod = ({ totalPrice }) => {
       borderWidth="1px"
       borderRadius="lg"
       boxShadow="md"
+      borderColor="gray.300"
     >
       <Heading as="h2" fontSize="2xl" mb={4} textAlign="center">
         Payment Details
@@ -41,6 +42,9 @@ const PaymentMethod = ({ totalPrice }) => {
             type="text"
             value={cardNumber}
             onChange={(e) => setCardNumber(e.target.value)}
+            borderColor="gray.300"
+            placeholder="5925 6793 5385 4859"
+            variant="filled"
           />
         </FormControl>
         <FormControl id="expiryDate" isRequired>
@@ -49,6 +53,9 @@ const PaymentMethod = ({ totalPrice }) => {
             type="text"
             value={expiryDate}
             onChange={(e) => setExpiryDate(e.target.value)}
+            borderColor="gray.300"
+            placeholder="07/27"
+            variant="filled"
           />
         </FormControl>
         <FormControl id="cvv" isRequired>
@@ -57,6 +64,9 @@ const PaymentMethod = ({ totalPrice }) => {
             type="text"
             value={cvv}
             onChange={(e) => setCvv(e.target.value)}
+            borderColor="gray.300"
+            placeholder="559"
+            variant="filled"
           />
         </FormControl>
         <Divider />
