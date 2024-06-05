@@ -11,6 +11,7 @@ import {
   Stack,
   Divider,
 } from "@chakra-ui/react";
+import PaymentMethod from "../components/PaymentMethod"; // Import the PaymentMethod component
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -18,6 +19,7 @@ const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -44,6 +46,12 @@ const Orders = () => {
 
     fetchOrders();
   }, []);
+
+  useEffect(() => {
+    // Calculate the total price of all orders
+    const total = orders.reduce((acc, order) => acc + order.total, 0);
+    setTotalPrice(total);
+  }, [orders]);
 
   const handleDelete = async (orderId) => {
     try {
@@ -82,23 +90,12 @@ const Orders = () => {
   }
 
   return (
-    <Box
-      maxW="600px"
-      mx="auto"
-      p="4"
-      my="6"
-      borderWidth="1px"
-      borderRadius="lg"
-      boxShadow="md"
-    >
-      <Heading as="h2" fontSize="2xl" mb={4} textAlign="center">
-        Orders
-      </Heading>
-      {orders.length === 0 ? (
-        <Text textAlign="center">No orders placed yet</Text>
-      ) : (
-        <VStack spacing={6}>
-          {orders.map((order) => (
+    <Box>
+      <VStack spacing={6} mb={8}>
+        {orders.length === 0 ? (
+          <Text textAlign="center">No orders placed yet</Text>
+        ) : (
+          orders.map((order) => (
             <Box
               key={order._id}
               borderWidth="1px"
@@ -106,6 +103,7 @@ const Orders = () => {
               overflow="hidden"
               p="5"
               w="100%"
+              boxShadow="md"
             >
               <Stack direction={["column", "row"]} spacing="4" align="center">
                 <Image
@@ -133,9 +131,10 @@ const Orders = () => {
               </Stack>
               <Divider mt="4" />
             </Box>
-          ))}
-        </VStack>
-      )}
+          ))
+        )}
+      </VStack>
+      {orders.length > 0 && <PaymentMethod totalPrice={totalPrice} />}
     </Box>
   );
 };
