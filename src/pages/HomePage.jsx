@@ -146,8 +146,6 @@ function getRandomProducts(products, count) {
 function ProductBox({ product, onClick }) {
   return (
     <Box
-      as={Link}
-      to={`/product/${product._id}`}
       borderWidth="1px"
       borderRadius="lg"
       overflow="hidden"
@@ -157,7 +155,7 @@ function ProductBox({ product, onClick }) {
       height="100%"
     >
       <Flex direction="column" height="100%">
-        <Center flex="1">
+        <Center flex="1" as={Link} to={`/product/${product._id}`}>
           <Image
             src={product.image}
             alt={product.name}

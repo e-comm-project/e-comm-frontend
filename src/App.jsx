@@ -14,6 +14,7 @@ import ContactUs from "./pages/ContactUs";
 import AdminDashboard from "./pages/AdminDashboard";
 import { CartProvider } from "./context/cart.context";
 import Orders from "./pages/Orders";
+import { Box, Flex } from "@chakra-ui/react";
 
 import IsAdmin from "./components/IsAdmin";
 
@@ -33,28 +34,32 @@ function App() {
     location.pathname !== "/contact";
   return (
     <CartProvider>
-      {!isNotFoundPage && <Header />}
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route
-          path="/admin"
-          element={
-            <IsAdmin>
-              <AdminDashboard />
-            </IsAdmin>
-          }
-        />
-        <Route path="/products" element={<ProductList />} />
-        <Route path="/product/:productId" element={<ProductDetails />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/about" element={<AboutUs />} />
-        <Route path="/contact" element={<ContactUs />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      {!isNotFoundPage && <Footer />}
+      <Flex direction={"column"} minHeight="100vh">
+        {!isNotFoundPage && <Header />}
+        <Box flex="1">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route
+              path="/admin"
+              element={
+                <IsAdmin>
+                  <AdminDashboard />
+                </IsAdmin>
+              }
+            />
+            <Route path="/products" element={<ProductList />} />
+            <Route path="/product/:productId" element={<ProductDetails />} />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/contact" element={<ContactUs />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Box>
+        {!isNotFoundPage && <Footer />}
+      </Flex>
     </CartProvider>
   );
 }
