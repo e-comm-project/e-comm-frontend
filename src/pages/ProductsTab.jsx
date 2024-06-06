@@ -299,9 +299,10 @@ const ProductsTab = ({
                 name="genre"
                 value={form.genre}
                 onChange={handleInputChange}
-              />
-              <option value="Men">Men</option>
-              <option value="Women">Women</option>
+              >
+                <option value="Men">Men</option>
+                <option value="Women">Women</option>
+              </Select>
             </FormControl>
           </ModalBody>
           <ModalFooter>
