@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import {
   Box,
@@ -6,12 +6,8 @@ import {
   VStack,
   HStack,
   Text,
-  Spinner,
-  Alert,
-  AlertIcon,
-  Input,
-  FormControl,
-  FormLabel,
+  Image,
+  Flex,
   useDisclosure,
   Modal,
   ModalOverlay,
@@ -20,24 +16,32 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Image,
-  Flex, // Import Flex component
-  useBreakpointValue,
+  FormControl,
+  FormLabel,
+  Input,
   useToast,
   AlertDialog,
   AlertDialogBody,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogContent,
-  AlertDialogOverlay, // Import useBreakpointValue for responsive values
+  AlertDialogOverlay,
 } from "@chakra-ui/react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const ProductsTab = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const ProductsTab = ({
+  products,
+  setProducts,
+  onDeleteProduct,
+  onUpdateProduct,
+}) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isDeleteDialogOpen,
+    onOpen: onOpenDeleteDialog,
+    onClose: onCloseDeleteDialog,
+  } = useDisclosure();
   const [form, setForm] = useState({
     name: "",
     price: "",
@@ -50,34 +54,10 @@ const ProductsTab = () => {
     countInStock: "",
     genre: "",
   });
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    isOpen: isDeleteDialogOpen,
-    onOpen: onOpenDeleteDialog,
-    onClose: onCloseDeleteDialog,
-  } = useDisclosure();
   const [currentProduct, setCurrentProduct] = useState(null);
   const [productIdToDelete, setProductIdToDelete] = useState(null);
   const toast = useToast();
   const cancelRef = React.useRef();
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const token = localStorage.getItem("authToken");
-        const response = await axios.get(`${API_URL}/admin/products`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setProducts(response.data);
-        setLoading(false);
-      } catch (error) {
-        setError(error.message);
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
 
   const handleInputChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -142,16 +122,7 @@ const ProductsTab = () => {
   const handleUpdateProduct = async () => {
     try {
       const token = localStorage.getItem("authToken");
-      const response = await axios.put(
-        `${API_URL}/admin/products/${currentProduct._id}`,
-        form,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      setProducts(
-        products.map((p) => (p._id === currentProduct._id ? response.data : p))
-      );
+      await onUpdateProduct(currentProduct._id, form);
       setCurrentProduct(null);
       setForm({
         name: "",
@@ -166,13 +137,6 @@ const ProductsTab = () => {
         genre: "",
       });
       onClose();
-      toast({
-        title: "Product updated.",
-        description: "The product has been successfully updated.",
-        status: "success",
-        duration: 2000,
-        isClosable: true,
-      });
     } catch (error) {
       console.error("Error updating product:", error);
       toast({
@@ -184,52 +148,16 @@ const ProductsTab = () => {
       });
     }
   };
+
   const handleDeleteClick = (productId) => {
     setProductIdToDelete(productId);
     onOpenDeleteDialog();
   };
 
-  const handleDeleteProduct = async () => {
-    try {
-      const token = localStorage.getItem("authToken");
-      await axios.delete(`${API_URL}/admin/products/${productIdToDelete}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setProducts(
-        products.filter((product) => product._id !== productIdToDelete)
-      );
-      onCloseDeleteDialog();
-      toast({
-        title: "Product deleted.",
-        description: "The product has been successfully deleted.",
-        status: "success",
-        duration: 2000,
-        isClosable: true,
-      });
-    } catch (error) {
-      console.error("Error deleting product:", error);
-      toast({
-        title: "Error deleting product.",
-        description: "There was an error deleting the product.",
-        status: "error",
-        duration: 2000,
-        isClosable: true,
-      });
-    }
+  const handleDeleteProduct = () => {
+    onDeleteProduct(productIdToDelete);
+    onCloseDeleteDialog();
   };
-
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (error) {
-    return (
-      <Alert status="error">
-        <AlertIcon />
-        {error}
-      </Alert>
-    );
-  }
 
   return (
     <Box>
@@ -387,6 +315,7 @@ const ProductsTab = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
+
       <AlertDialog
         isOpen={isDeleteDialogOpen}
         leastDestructiveRef={cancelRef}
