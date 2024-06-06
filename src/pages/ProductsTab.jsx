@@ -26,6 +26,7 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
+  Select,
 } from "@chakra-ui/react";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -294,11 +295,13 @@ const ProductsTab = ({
             </FormControl>
             <FormControl mb={4}>
               <FormLabel>Genre</FormLabel>
-              <Input
+              <Select
                 name="genre"
                 value={form.genre}
                 onChange={handleInputChange}
               />
+              <option value="Men">Men</option>
+              <option value="Women">Women</option>
             </FormControl>
           </ModalBody>
           <ModalFooter>
