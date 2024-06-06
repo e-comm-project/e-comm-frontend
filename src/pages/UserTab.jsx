@@ -31,7 +31,7 @@ const UserTab = ({ users, onDeleteUser }) => {
 
   return (
     <Box>
-      <VStack spacing={4}>
+      <VStack spacing={4} w="100%">
         {users.map((user) => (
           <Box
             key={user._id}
@@ -41,17 +41,19 @@ const UserTab = ({ users, onDeleteUser }) => {
             w="100%"
             boxShadow="md"
           >
-            <HStack spacing={4} justifyContent="space-between" w="100%">
+            <VStack spacing={2} w="100%">
               <Text>
                 {user.name} - {user.email}
               </Text>
-              <Button
-                colorScheme="red"
-                onClick={() => handleDeleteClick(user._id)}
-              >
-                Delete
-              </Button>
-            </HStack>
+              <HStack spacing={4} justifyContent="space-between" w="100%">
+                <Button
+                  colorScheme="red"
+                  onClick={() => handleDeleteClick(user._id)}
+                >
+                  Delete
+                </Button>
+              </HStack>
+            </VStack>
           </Box>
         ))}
       </VStack>
