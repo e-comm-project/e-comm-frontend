@@ -19,6 +19,7 @@ import {
   Tab,
   TabPanels,
   TabPanel,
+  Flex,
 } from "@chakra-ui/react";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -73,7 +74,6 @@ const ProductList = () => {
     setFilteredWomenProducts(womenFiltered);
   }, [selectedCategory, selectedTab, products]);
 
-  // Rest of the code...
   const handleAddToOrder = async (product) => {
     try {
       const token = localStorage.getItem("authToken");
@@ -145,10 +145,12 @@ const ProductList = () => {
 
   return (
     <Box p="5">
-      <Tabs onChange={handleTabChange}>
+      <Tabs
+        onChange={(index) => handleTabChange(index === 0 ? "Men" : "Women")}
+      >
         <TabList>
-          <Tab>Men</Tab>
-          <Tab>Women</Tab>
+          <Tab>Woman</Tab>
+          <Tab>Buy A Gift For Your Men</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -176,9 +178,9 @@ const ProductList = () => {
               }}
               gap="6"
             >
-              {filteredMenProducts.map((product) => (
+              {filteredWomenProducts.map((product) => (
                 <GridItem
-                  key={product.id}
+                  key={product._id}
                   borderWidth="1px"
                   borderRadius="md"
                   overflow="hidden"
@@ -194,25 +196,33 @@ const ProductList = () => {
                       height="100%"
                     />
                   </Link>
-                  <Box
+                  <Flex
+                    direction="column"
+                    justify="space-between"
+                    align="center"
                     position="absolute"
                     bottom="0"
                     left="0"
                     width="100%"
+                    height={{ base: "auto", sm: "200px" }} // Increased height
                     bg="rgba(0, 0, 0, 0.6)"
                     color="white"
-                    p="3"
+                    p="4"
                     textAlign="center"
                   >
-                    <Heading as="h2" size="md" mb="2">
+                    <Heading as="h2" size="md">
                       {product.name}
                     </Heading>
-                    <Text mb="2">{product.description}</Text>
+                    <Text>{product.description}</Text>
                     <Text fontWeight="bold">Price: ${product.price}</Text>
-                    <Button onClick={() => handleAddToOrder(product)}>
+                    <Button
+                      width="80%"
+                      mt="2"
+                      onClick={() => handleAddToOrder(product)}
+                    >
                       Add to Order
                     </Button>
-                  </Box>
+                  </Flex>
                 </GridItem>
               ))}
             </Grid>
@@ -242,9 +252,9 @@ const ProductList = () => {
               }}
               gap="6"
             >
-              {filteredWomenProducts.map((product) => (
+              {filteredMenProducts.map((product) => (
                 <GridItem
-                  key={product.id}
+                  key={product._id}
                   borderWidth="1px"
                   borderRadius="md"
                   overflow="hidden"
@@ -260,25 +270,33 @@ const ProductList = () => {
                       height="100%"
                     />
                   </Link>
-                  <Box
+                  <Flex
+                    direction="column"
+                    justify="space-between"
+                    align="center"
                     position="absolute"
                     bottom="0"
                     left="0"
                     width="100%"
+                    height={{ base: "auto", sm: "200px" }} // Increased height
                     bg="rgba(0, 0, 0, 0.6)"
                     color="white"
-                    p="3"
+                    p="4"
                     textAlign="center"
                   >
-                    <Heading as="h2" size="md" mb="2">
+                    <Heading as="h2" size="md">
                       {product.name}
                     </Heading>
-                    <Text mb="2">{product.description}</Text>
+                    <Text>{product.description}</Text>
                     <Text fontWeight="bold">Price: ${product.price}</Text>
-                    <Button onClick={() => handleAddToOrder(product)}>
+                    <Button
+                      width="80%"
+                      mt="2"
+                      onClick={() => handleAddToOrder(product)}
+                    >
                       Add to Order
                     </Button>
-                  </Box>
+                  </Flex>
                 </GridItem>
               ))}
             </Grid>
