@@ -13,13 +13,14 @@ import {
   Image,
   useToast,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 const PaymentMethod = ({ totalPrice }) => {
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [cvv, setCvv] = useState("");
   const toast = useToast();
-
+  const navigate = useNavigate();
   const handlePayment = () => {
     console.log("Payment processed!");
     toast({
@@ -29,6 +30,7 @@ const PaymentMethod = ({ totalPrice }) => {
       duration: 5000,
       isClosable: true,
     });
+    navigate("/");
   };
 
   return (
