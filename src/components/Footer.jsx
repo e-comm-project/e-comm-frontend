@@ -9,6 +9,8 @@ import {
   useColorModeValue,
   VisuallyHidden,
   Link,
+  Image,
+  HStack,
 } from "@chakra-ui/react";
 import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 
@@ -67,7 +69,7 @@ const Footer = () => {
           <RouterLink to={"/"}>Home</RouterLink>
           <RouterLink to={"/about"}>About</RouterLink>{" "}
           <RouterLink to={"/contact"}>Contact Us</RouterLink>{" "}
-          <RouterLink to={"/products"}>All Products</RouterLink>{" "}
+          <RouterLink to={"/products"}>Products</RouterLink>{" "}
         </Stack>
       </Container>
 
@@ -86,6 +88,37 @@ const Footer = () => {
           align={{ base: "center", md: "center" }}
         >
           <Text>© 2024 AboutShe </Text>
+          <HStack
+            justifyContent="center"
+            mb={4}
+            mt={2}
+            spacing={{ base: 1, md: 4 }}
+          >
+            <Image
+              src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg"
+              alt="Visa"
+              height={{ base: "20px", md: "28px" }}
+              maxW={{ base: "40px", md: "60px" }}
+            />
+            <Image
+              src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg"
+              alt="Mastercard"
+              height={{ base: "20px", md: "28px" }}
+              maxW={{ base: "40px", md: "60px" }}
+            />
+            <Image
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/American_Express_logo_%282018%29.svg/601px-American_Express_logo_%282018%29.svg.png?20191022102801"
+              alt="American Express"
+              height={{ base: "20px", md: "28px" }}
+              maxW={{ base: "40px", md: "60px" }}
+            />
+            <Image
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/1200px-PayPal.svg.png?20230314142951"
+              alt="Paypal"
+              height={{ base: "20px", md: "28px" }}
+              maxW={{ base: "40px", md: "60px" }}
+            />
+          </HStack>
           <Stack direction={"row"} spacing={6}>
             <SocialButton label={"Twitter"} href="https://twitter.com">
               <FaTwitter />

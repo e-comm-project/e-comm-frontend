@@ -98,7 +98,7 @@ function Navbar() {
           color="black"
           mr={4}
         >
-          All Products
+          Products
         </Box>
       </Flex>
 
@@ -219,7 +219,7 @@ function Navbar() {
                   color="black"
                   onClick={onClose}
                 >
-                  Women
+                  Products
                 </Box>
                 {user ? (
                   <>

@@ -70,10 +70,10 @@ const PaymentMethod = ({ totalPrice }) => {
           maxW={{ base: "30px", md: "50px" }}
         />
         <Image
-          src="https://upload.wikimedia.org/wikipedia/commons/3/37/Discover-logo.png?20210625133609"
-          alt="Discover"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/1200px-PayPal.svg.png?20230314142951"
+          alt="Paypal"
           height={{ base: "24px", md: "32px" }}
-          maxW={{ base: "30px", md: "50px" }}
+          maxW={{ base: "45px", md: "60px" }}
         />
       </HStack>
       <VStack spacing={4}>
