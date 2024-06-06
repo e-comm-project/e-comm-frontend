@@ -21,7 +21,9 @@ import {
 import React, { useState } from "react";
 import { BsGithub, BsPerson, BsTwitter } from "react-icons/bs";
 import { MdEmail, MdOutlineEmail } from "react-icons/md";
-
+import emailjs from "@emailjs/browser";
+import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
 const confetti = {
   light: {
     primary: "4299E1", // blue.400
@@ -42,10 +44,10 @@ export default function Contact() {
     email: "",
     message: "",
   });
-
   const { hasCopied, onCopy } = useClipboard(form.email);
   const toast = useToast();
-
+  const formRef = useRef();
+  const navigate = useNavigate();
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setForm({
@@ -53,23 +55,34 @@ export default function Contact() {
       [name]: value,
     });
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Mock form submission
-    console.log(form);
-    toast({
-      title: "Message sent.",
-      description: "Your message has been sent successfully.",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
-    setForm({
-      name: "",
-      email: "",
-      message: "",
-    });
+
+    emailjs
+      .sendForm("service_h5f0axk", "template_opyevcw", formRef.current, {
+        publicKey: "9Uwuj0GyKuY_cZmXO",
+      })
+      .then(
+        () => {
+          toast({
+            title: "Message sent.",
+            description:
+              "Thank You For Contacting Us, We'll get in touch ASAP😊",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+          setForm({
+            name: "",
+            email: "",
+            message: "",
+          });
+          navigate("/");
+        },
+        (error) => {
+          console.log("FAILED...", error.text);
+        }
+      );
   };
 
   return (
@@ -98,7 +111,6 @@ export default function Contact() {
             >
               Get in Touch
             </Heading>
-
             <Stack
               spacing={{ base: 4, md: 8, lg: 20 }}
               direction={{ base: "column", md: "row" }}
@@ -127,7 +139,6 @@ export default function Contact() {
                     isRound
                   />
                 </Tooltip>
-
                 <Link href="https://github.com/e-comm-project" target="_blank">
                   <IconButton
                     aria-label="github"
@@ -142,7 +153,6 @@ export default function Contact() {
                     isRound
                   />
                 </Link>
-
                 <Link href="https://x.com/" target="_blank">
                   <IconButton
                     aria-label="twitter"
@@ -157,7 +167,6 @@ export default function Contact() {
                   />
                 </Link>
               </Stack>
-
               <Box
                 bg={useColorModeValue("white", "gray.700")}
                 borderRadius="lg"
@@ -166,7 +175,7 @@ export default function Contact() {
                 shadow="base"
                 w={{ base: "100%", md: "auto" }}
               >
-                <form onSubmit={handleSubmit}>
+                <form ref={formRef} onSubmit={handleSubmit}>
                   <VStack spacing={5}>
                     <FormControl isRequired>
                       <FormLabel>Name</FormLabel>
@@ -181,7 +190,6 @@ export default function Contact() {
                         />
                       </InputGroup>
                     </FormControl>
-
                     <FormControl isRequired>
                       <FormLabel>Email</FormLabel>
                       <InputGroup>
@@ -195,7 +203,6 @@ export default function Contact() {
                         />
                       </InputGroup>
                     </FormControl>
-
                     <FormControl isRequired>
                       <FormLabel>Message</FormLabel>
                       <Textarea
@@ -207,7 +214,6 @@ export default function Contact() {
                         onChange={handleInputChange}
                       />
                     </FormControl>
-
                     <Button
                       colorScheme="blue"
                       bg="blue.400"
