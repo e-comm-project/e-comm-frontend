@@ -18,13 +18,13 @@ To get started with AboutShe, follow these steps:
 Clone the repository:
 
 ```bash
-git clone https://github.com/username/aboutshe.git
+git clone https://github.com/e-comm-project/e-comm-frontend
 ```
 
 Navigate to the project directory:
 
 ```bash
-cd aboutshe
+cd e-comm-frontend
 ```
 
 Install the dependencies:
