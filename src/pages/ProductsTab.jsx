@@ -298,6 +298,7 @@ const ProductsTab = ({
               <Select
                 name="genre"
                 value={form.genre}
+                placeholder="Select genre"
                 onChange={handleInputChange}
               >
                 <option value="Men">Men</option>
