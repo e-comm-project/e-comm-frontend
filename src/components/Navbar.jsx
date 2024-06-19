@@ -263,14 +263,6 @@ function Navbar() {
                 )}
                 <Box
                   as={RouterLink}
-                  to="/favorites"
-                  color="black"
-                  onClick={onClose}
-                >
-                  <Icon as={FiHeart} /> Favorites
-                </Box>
-                <Box
-                  as={RouterLink}
                   to="/orders"
                   color="black"
                   onClick={onClose}
